@@ -1,9 +1,17 @@
 package primitives;
 
+/**
+ * Class representing a ray in 3D space.
+ */
 public class Ray {
     private final Point head;
     private final Vector direction;
 
+    /**
+     * Constructs a new Ray with the given head (starting point) and direction.
+     * @param head The starting point of the Ray.
+     * @param direction The direction Vector of the Ray.
+     */
     public Ray(Point head, Vector direction) {
         if (direction.length() == 0)
             throw new IllegalArgumentException("Ray direction vector cannot be the zero vector.");
