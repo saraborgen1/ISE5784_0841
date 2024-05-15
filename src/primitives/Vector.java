@@ -14,8 +14,8 @@ public class Vector extends Point {
             throw new IllegalArgumentException("Vector cannot be initialized with non-zero coordinates.");
     }
 
-    public Vector add(Point point) {
-        return new Vector(xyz.add(point.xyz));
+    public Vector add(Vector vector) {
+        return new Vector(xyz.add(vector.xyz));
     }
 
     public Vector scale(double number) {
