@@ -13,6 +13,7 @@ import static primitives.Util.isZero;
 class VectorTest {
 
     private final double DELTA = 0.000001;
+
     @Test
     void testAdd() {
         Vector v1 = new Vector(1, 2, 3);
@@ -30,7 +31,38 @@ class VectorTest {
     }
 
     @Test
+    void testSubtract() {
+        Vector v1 = new Vector(1, 2, 3);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> v1.subtract(v1),
+                "ERROR: Vector - itself does not throw an exception"
+        );
+
+        assertEquals(
+                new Vector(3, 6, 9),
+                v1.subtract(new Vector(-2, -4, -6)),
+                "ERROR: Vector + Vector does not work correctly"
+        );
+
+    }
+
+    @Test
     void testScale() {
+        Vector v1 = new Vector(1, 2, 3);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> v1.scale(0),
+                "ERROR: Vector * 0 does not throw an exception"
+        );
+
+        assertEquals(
+                new Vector(3, 6, 9),
+                v1.scale(3),
+                "ERROR: Vector * number does not work correctly"
+        );
     }
 
     @Test
@@ -125,12 +157,12 @@ class VectorTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                ()-> v1.crossProduct(v1.normalize()),
+                () -> v1.crossProduct(v1.normalize()),
                 "ERROR: the normalized vector is not parallel to the original one"
         );
 
         assertTrue(
-                v1.dotProduct(v1.normalize())>0,
+                v1.dotProduct(v1.normalize()) > 0,
                 "ERROR: the normalized vector is opposite to the original one"
         );
 
