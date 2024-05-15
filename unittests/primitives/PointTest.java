@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class PointTest {
 
+    /**
+     * Test method for {@link primitives.Point#subtract(primitives.Point)}.
+     */
     @Test
     void testSubtract() {
         Point p1 = new Point(1, 2, 3);
@@ -29,6 +32,9 @@ class PointTest {
         );
     }
 
+    /**
+     * Test method for {@link primitives.Point#add(primitives.Vector)}.
+     */
     @Test
     void testAdd() {
         Point p1 = new Point(1, 2, 3);
@@ -47,6 +53,9 @@ class PointTest {
         );
     }
 
+    /**
+     * Test method for {@link primitives.Point#distanceSquared(primitives.Point)}.
+     */
     @Test
     void testDistanceSquared() {
         Point p1 = new Point(1, 2, 3);
@@ -71,6 +80,9 @@ class PointTest {
         );
     }
 
+    /**
+     * Test method for {@link primitives.Point#distance(primitives.Point)}.
+     */
     @Test
     void testDistance() {
         Point p1 = new Point(1, 2, 3);

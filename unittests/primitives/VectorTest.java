@@ -11,9 +11,15 @@ import static primitives.Util.isZero;
  * Unit tests for primitives.Vector class
  */
 class VectorTest {
-
+    /**
+     * Delta value for accuracy when comparing the numbers of type 'double' in
+     * assertEquals
+     */
     private final double DELTA = 0.000001;
 
+    /**
+     * Test method for {@link primitives.Vector#add(primitives.Vector)}.
+     */
     @Test
     void testAdd() {
         Vector v1 = new Vector(1, 2, 3);
@@ -30,6 +36,9 @@ class VectorTest {
 
     }
 
+    /**
+     * Test method for {@link primitives.Vector#subtract(primitives.Point)}.
+     */
     @Test
     void testSubtract() {
         Vector v1 = new Vector(1, 2, 3);
@@ -48,6 +57,9 @@ class VectorTest {
 
     }
 
+    /**
+     * Test method for {@link primitives.Vector#scale(double)}.
+     */
     @Test
     void testScale() {
         Vector v1 = new Vector(1, 2, 3);
@@ -65,6 +77,9 @@ class VectorTest {
         );
     }
 
+    /**
+     * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
+     */
     @Test
     void testDotProduct() {
         Vector v1 = new Vector(1, 2, 3);
@@ -86,6 +101,9 @@ class VectorTest {
         );
     }
 
+    /**
+     * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
+     */
     @Test
     void testCrossProduct() {
         Vector v1 = new Vector(1, 2, 3);
@@ -120,6 +138,9 @@ class VectorTest {
         );
     }
 
+    /**
+     * Test method for {@link Vector#lengthSquared()}.
+     */
     @Test
     void testLengthSquared() {
         Vector v1 = new Vector(1, 2, 2);
@@ -132,6 +153,9 @@ class VectorTest {
         );
     }
 
+    /**
+     * Test method for {@link Vector#length()}.
+     */
     @Test
     void testLength() {
         Vector v1 = new Vector(1, 2, 2);
@@ -144,6 +168,9 @@ class VectorTest {
         );
     }
 
+    /**
+     * Test method for {@link Vector#normalize()}.
+     */
     @Test
     void testNormalize() {
         Vector v1 = new Vector(1, 2, 2);
