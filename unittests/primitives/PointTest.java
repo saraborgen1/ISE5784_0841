@@ -9,12 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for primitives.Point class
  */
 class PointTest {
-
-    @Test
-    void testConstructor(){
-        
-    }
-
     /**
      * Test method for {@link primitives.Point#subtract(primitives.Point)}.
      */

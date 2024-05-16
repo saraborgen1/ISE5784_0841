@@ -19,7 +19,17 @@ class VectorTest {
 
     @Test
     void testConstructor(){
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Vector(0, 0, 0),
+                "ERROR: zero vector does not throw an exception"
+        );
 
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Vector(Double3.ZERO),
+                "ERROR: zero vector does not throw an exception"
+        );
     }
 
     /**
