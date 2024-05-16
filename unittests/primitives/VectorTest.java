@@ -17,6 +17,11 @@ class VectorTest {
      */
     private final double DELTA = 0.000001;
 
+    @Test
+    void testConstructor(){
+
+    }
+
     /**
      * Test method for {@link primitives.Vector#add(primitives.Vector)}.
      */
