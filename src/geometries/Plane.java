@@ -4,7 +4,7 @@ import primitives.*;
 /**
  * Class representing a plane in 3D space.
  */
-public class Plane {
+public class Plane implements Geometry{
     private final Point q;
     private final Vector normal;
 
@@ -15,7 +15,9 @@ public class Plane {
      * @param p3 The third point.
      */
     public Plane(Point p1, Point p2, Point p3) {
-        this.normal=null;
+        Vector v1=p2.subtract(p1);
+        Vector v2=p3.subtract(p1);
+        this.normal=v1.crossProduct(v2).normalize();
         this.q=p1;
     }
 

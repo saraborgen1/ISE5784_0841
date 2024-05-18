@@ -11,8 +11,27 @@ class PlaneTest {
 
     @Test
     void testConstructor() {
+            assertThrows(
+                    IllegalArgumentException.class,
+                    () -> new Plane(
+                            new Point(1, 1, 1),
+                            new Point(1, 1, 1),
+                            new Point(0, 0, 1)
+                    ),
+                    "Constructor should throw exception when first and second points coincide"
+            );
 
-    }
+            // Test case 2: All points lie on the same line
+            assertThrows(
+                    IllegalArgumentException.class,
+                    () -> new Plane(
+                            new Point(1, 1, 1),
+                            new Point(2, 2, 2),
+                            new Point(3, 3, 3)
+                    ),
+                    "Constructor should throw exception when all points lie on the same line"
+            );
+        }
 
     @Test
     void testGetNormal() {
@@ -27,9 +46,13 @@ class PlaneTest {
                 DELTA,
                 "Normal vector should have length 1"
         );
+
+        //לבדוק שזה באמת יצא תקין
+        assertEquals(
+                new Vector(0, 1/Math.sqrt(2),1/Math.sqrt(2)),
+                plane.getNormal().normalize(),
+                ""
+        );
     }
 
-    @Test
-    void testTestGetNormal() {
-    }
 }

@@ -12,9 +12,9 @@ class SphereTest {
         Sphere sphere = new Sphere(Point.ZERO, 1);
         Point point = new Point(1, 0, 0);
         assertEquals(
-                1,
-                sphere.getNormal(point).length(),
-                "Normal vector should have length 1"
+                new Vector(-1,0,0),
+                sphere.getNormal(point).normalize(),
+                ""
         );
     }
 }
