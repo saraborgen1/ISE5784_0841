@@ -4,8 +4,14 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for geometries.Triangle class
+ */
 class TriangleTest {
 
+    /**
+     * Test method for {@link geometries.Triangle#getNormal(Point)}.
+     */
     @Test
     public void testGetNormal() {
 
@@ -15,12 +21,14 @@ class TriangleTest {
                 new Point(0, 1, 0)
         );
 
-
+        // ============ Equivalence Partitions Tests ==============
+        /*
+         *TC01:Test normal calculation at one of the vertices of the triangle
+         */
         assertEquals(
                 new Vector(0, 0, 1),
                 triangle.getNormal(new Point(0, 0, 0)),
-                "Wrong normal calculation"
+                "ERROR: getNormal() wrong result"
         );
     }
-
 }

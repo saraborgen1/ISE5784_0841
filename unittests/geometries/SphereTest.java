@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for geometries.Sphere class
+ */
 class SphereTest {
 
     @Test
@@ -12,7 +15,7 @@ class SphereTest {
         Sphere sphere = new Sphere(Point.ZERO, 1);
         Point point = new Point(1, 0, 0);
         assertEquals(
-                new Vector(-1,0,0),
+                new Vector(1,0,0),
                 sphere.getNormal(point).normalize(),
                 ""
         );

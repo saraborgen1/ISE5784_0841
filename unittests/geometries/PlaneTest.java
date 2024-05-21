@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for geometries.Plane class
+ */
 class PlaneTest {
 
     private final double DELTA = 0.000001;
@@ -49,7 +52,7 @@ class PlaneTest {
 
         //לבדוק שזה באמת יצא תקין
         assertEquals(
-                new Vector(0, 1/Math.sqrt(2),1/Math.sqrt(2)),
+                new Vector(1/Math.sqrt(3), 1/Math.sqrt(3),1/Math.sqrt(3)),
                 plane.getNormal().normalize(),
                 ""
         );
