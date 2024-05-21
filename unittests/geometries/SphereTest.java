@@ -10,14 +10,22 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class SphereTest {
 
+    /**
+     * Test method for {@link geometries.Sphere#getNormal(Point)}.
+     */
     @Test
     void testGetNormal() {
         Sphere sphere = new Sphere(Point.ZERO, 1);
         Point point = new Point(1, 0, 0);
+
+        // ============ Equivalence Partitions Tests ==============
+        /*
+         *TC01: Test normal at a specific point on the sphere's surface
+         */
         assertEquals(
                 new Vector(1,0,0),
                 sphere.getNormal(point).normalize(),
-                ""
+                "ERROR: getNormal() wrong result"
         );
     }
 }

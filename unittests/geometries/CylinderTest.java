@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class CylinderTest {
 
+    /**
+     * Test method for {@link geometries.Cylinder#getNormal(Point)}.
+     */
     @Test
     void testGetNormal() {
         Cylinder cylinder = new Cylinder(
@@ -19,42 +22,51 @@ class CylinderTest {
                 10
         );
 
-
-        //נקודה על צד הגליל
+        // ============ Equivalence Partitions Tests ==============
+        /*
+         *TC01:Test normal at a point on the side surface of the cylinder
+         */
         assertEquals(
                 new Vector(2, 0, 0).normalize(),
                 cylinder.getNormal(new Point(2, 0, 5)),
-                ""
+                "ERROR: getNormal() wrong result for point on side surface"
         );
 
-        //נקודה על הבסיס העליון
+        /*
+         * TC02:Test normal at a point on the top base of the cylinder
+         */
         assertEquals(
                 new Vector(0, 0, 1),
                 cylinder.getNormal(new Point(1, 1, 10)),
-                ""
+                "ERROR: getNormal() wrong result for point on top base"
         );
 
-        //נקודה על הבסיס התחתון
+        /*
+         * TC03:Test normal at a point on the bottom base of the cylinder
+         */
         assertEquals(
                 new Vector(0, 0, -1),
                 cylinder.getNormal(new Point(1, 1, 0)),
-                ""
+                "ERROR: getNormal() wrong result for point on bottom base"
         );
 
-        //נקודת המרכז על הבסיס העליון
+        // =============== Boundary Values Tests ==================
+        /*
+         * TC01:Test normal at the center of the top base
+         */
         assertEquals(
                 new Vector(0, 0, 1),
                 cylinder.getNormal(new Point(0, 0, 10)),
-                ""
+                "ERROR: getNormal() wrong result for point at center of top base"
         );
 
-        //נקודת המרכז על הבסיס התחתון
+        /*
+         * TC02:Test normal at the center of the bottom base
+         */
         assertEquals(
                 new Vector(0, 0, -1),
                 cylinder.getNormal(new Point(0, 0, 0)),
-                ""
+                "ERROR: getNormal() wrong result for point at center of bottom base"
         );
-
     }
-
 }

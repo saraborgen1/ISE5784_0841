@@ -31,10 +31,19 @@ public class Plane implements Geometry{
         this.normal = normal.normalize();
     }
 
+    /**
+     * Returns the normal vector to the plane.
+     * @return The normal vector.
+     */
     public Vector getNormal(){
         return normal;
     }
 
+    /**
+     * Returns the normal vector to the plane at a given point.
+     * @param p The point on the geometry.
+     * @return The normal vector.
+     */
     public Vector getNormal(Point p){
         return normal;
     }

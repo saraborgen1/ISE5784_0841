@@ -18,21 +18,28 @@ public class Cylinder extends Tube {
         this.height = height;
     }
 
+    /**
+     * Returns the normal vector to the cylinder at a given point.
+     * @param p The point on the surface of the cylinder.
+     * @return The normal vector at the given point.
+     */
     public Vector getNormal(Point p) {
         Point point = axis.getHead();
         Vector vector = axis.getDirection().normalize();
 
-        // אם הנקודה נמצאת על הבסיס התחתון
+        // Check if the point is on the bottom base of the cylinder.
         if (p.equals(point) || Util.isZero(p.subtract(point).dotProduct(vector))) {
+            // Normal points in the opposite direction of the axis.
             return vector.scale(-1);
         }
 
-        // אם הנקודה נמצאת על הבסיס העליון
+        // Check if the point is on the top base of the cylinder.
         if ( p.equals(point.add(vector.scale(height)))||
                 Util.isZero(p.subtract(point.add(vector.scale(height))).dotProduct(vector)))
+            // Normal points in the direction of the axis.
             return vector;
 
-        // אם הנקודה נמצאת על המעטפת הקמורה
+        // If the point is on the curved surface of the cylinder, use the Tube's normal calculation.
         return super.getNormal(p);
     }
 }

@@ -1,4 +1,5 @@
 package geometries;
+
 import primitives.*;
 
 import org.junit.jupiter.api.Test;
@@ -10,32 +11,50 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PlaneTest {
 
+    /**
+     * Delta value for accuracy when comparing the numbers of type 'double' in
+     * assertEquals
+     */
     private final double DELTA = 0.000001;
 
+    /**
+     * Test method for {@link geometries.Plane#Plane(Point, Point, Point)}.
+     * Test method for {@link geometries.Plane#Plane(Point, Vector)}.
+     */
     @Test
     void testConstructor() {
-            assertThrows(
-                    IllegalArgumentException.class,
-                    () -> new Plane(
-                            new Point(1, 1, 1),
-                            new Point(1, 1, 1),
-                            new Point(0, 0, 1)
-                    ),
-                    "Constructor should throw exception when first and second points coincide"
-            );
 
-            // Test case 2: All points lie on the same line
-            assertThrows(
-                    IllegalArgumentException.class,
-                    () -> new Plane(
-                            new Point(1, 1, 1),
-                            new Point(2, 2, 2),
-                            new Point(3, 3, 3)
-                    ),
-                    "Constructor should throw exception when all points lie on the same line"
-            );
-        }
+        // =============== Boundary Values Tests ==================
+        /*
+         * TC01: Test constructor with two identical points, should throw IllegalArgumentException
+         */
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Plane(
+                        new Point(1, 1, 1),
+                        new Point(1, 1, 1),
+                        new Point(0, 0, 1)
+                ),
+                "Constructor should throw exception when first and second points coincide"
+        );
 
+        /*
+         * TC02:A test constructor with three points on the same line should throw IllegalArgumentException
+         */
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Plane(
+                        new Point(1, 1, 1),
+                        new Point(2, 2, 2),
+                        new Point(3, 3, 3)
+                ),
+                "Constructor should throw exception when all points lie on the same line"
+        );
+    }
+
+    /**
+     * Test method for {@link geometries.Plane#getNormal(Point)}.
+     */
     @Test
     void testGetNormal() {
         Point p1 = new Point(1, 0, 0);
@@ -43,19 +62,24 @@ class PlaneTest {
         Point p3 = new Point(0, 0, 1);
         Plane plane = new Plane(p1, p2, p3);
 
+        // ============ Equivalence Partitions Tests ==============
+        /*
+         *TC01:Test that the normal vector has a length of 1
+         */
         assertEquals(
                 1,
-                plane.getNormal().length() ,
+                plane.getNormal().length(),
                 DELTA,
                 "Normal vector should have length 1"
         );
 
-        //לבדוק שזה באמת יצא תקין
+        /*
+         *TC02:Test that the normal vector is correctly calculated and normalized
+         */
         assertEquals(
-                new Vector(1/Math.sqrt(3), 1/Math.sqrt(3),1/Math.sqrt(3)),
+                new Vector(1 / Math.sqrt(3), 1 / Math.sqrt(3), 1 / Math.sqrt(3)),
                 plane.getNormal().normalize(),
-                ""
+                "ERROR: getNormal() wrong result"
         );
     }
-
 }

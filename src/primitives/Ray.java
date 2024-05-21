@@ -19,10 +19,18 @@ public class Ray {
         this.direction = direction.normalize();
     }
 
+    /**
+     *Returns the direction vector of the ray.
+     * @return The direction vector.
+     */
     public Vector getDirection() {
         return direction;
     }
 
+    /**
+     * Returns the head (starting point) of the ray.
+     * @return The head point.
+     */
     public Point getHead() {
         return head;
     }
