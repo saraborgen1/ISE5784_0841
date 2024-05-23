@@ -1,6 +1,8 @@
 package geometries;
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Class representing a tube in 3D space.
  */
@@ -26,5 +28,9 @@ public class Tube extends RadialGeometry{
         double t=axis.getDirection().dotProduct(p.subtract(axis.getHead()));
         Point o=axis.getHead().add(axis.getDirection().scale(t));
         return p.subtract(o).normalize();
+    }
+
+    public List<Point> findIntsersections(Ray ray){
+        return null;
     }
 }
