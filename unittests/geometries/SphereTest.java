@@ -39,7 +39,8 @@ class SphereTest {
     @Test
     public void testFindIntersections() {
         Sphere sphere = new Sphere(p100, 1);
-        //נקודות על הSphere
+
+        //Points for help with calculations found on the sphere
         final Point gp1 = new Point(0.0651530771650466, 0.355051025721682, 0);
         final Point gp2 = new Point(1.53484692283495, 0.844948974278318, 0);
         final Point gp3 = Point.ZERO;
@@ -47,11 +48,11 @@ class SphereTest {
         final Point gp5 = new Point(1, 1, 0);
         final Point gp6= new Point(1.8867496997597595,0.4622498999199199,0.0);
 
-        //רשימות של נקודות על הSphere
+        //Lists of points to help with calculations
         final var exp1 = List.of(gp1, gp2);
         final var exp2 = List.of(gp3, gp4);
 
-        //וקטורי עזר
+        //Direction vectors to help with calculations
         final Vector v310 = new Vector(3, 1, 0);
         final Vector vMinus310 = new Vector(-3, -1, 0);
         final Vector v110 = new Vector(1, 1, 0);
@@ -59,7 +60,7 @@ class SphereTest {
         final Vector vMinus300= new Vector (-3, 0, 0);
         final Vector vMinus010= new Vector(0, -1, 0);
 
-        //נקודות עזר
+        //Points to help with calculations
         final Point pOutside = new Point(-1, 0, 0);
         final Point pInside = new Point(0.5, 0, 0);
         final Point pOutside2 = new Point(-1, 1, 0);

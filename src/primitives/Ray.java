@@ -1,53 +1,62 @@
-package primitives;
-
-/**
- * Class representing a ray in 3D space.
- */
-public class Ray {
-    private final Point head;
-    private final Vector direction;
+    package primitives;
 
     /**
-     * Constructs a new Ray with the given head (starting point) and direction.
-     * @param head The starting point of the Ray.
-     * @param direction The direction Vector of the Ray.
+     * Class representing a ray in 3D space.
      */
-    public Ray(Point head, Vector direction) {
-        if (direction.length() == 0)
-            throw new IllegalArgumentException("Ray direction vector cannot be the zero vector.");
-        this.head = head;
-        this.direction = direction.normalize();
-    }
+    public class Ray {
+        private final Point head;
+        private final Vector direction;
 
-    /**
-     *Returns the direction vector of the ray.
-     * @return The direction vector.
-     */
-    public Vector getDirection() {
-        return direction;
-    }
+        /**
+         * Constructs a new Ray with the given head (starting point) and direction.
+         * @param head The starting point of the Ray.
+         * @param direction The direction Vector of the Ray.
+         */
+        public Ray(Point head, Vector direction) {
+            if (direction.length() == 0)
+                throw new IllegalArgumentException("Ray direction vector cannot be the zero vector.");
+            this.head = head;
+            this.direction = direction.normalize();
+        }
 
-    /**
-     * Returns the head (starting point) of the ray.
-     * @return The head point.
-     */
-    public Point getHead() {
-        return head;
-    }
+        /**
+         *Returns the direction vector of the ray.
+         * @return The direction vector.
+         */
+        public Vector getDirection() {
+            return direction;
+        }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        return (obj instanceof Ray other)
-                && this.head.equals(other.head)
-                && this.direction.equals(other.direction);
-    }
+        /**
+         * Returns the head (starting point) of the ray.
+         * @return The head point.
+         */
+        public Point getHead() {
+            return head;
+        }
 
-    @Override
-    public String toString() {
-        return "Ray{" +
-                "head=" + head +
-                ", direction=" + direction +
-                '}';
+        /**
+         * Calculates a point along the ray's direction at a parameter t.
+         * @param t The parameter indicating the distance from the ray's head.
+         * @return The point along the ray's direction at distance t from the head.
+         */
+        public Point getPoint(double t){
+             return Util.isZero(t) ? head: head.add(direction.scale(t));
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            return (obj instanceof Ray other)
+                    && this.head.equals(other.head)
+                    && this.direction.equals(other.direction);
+        }
+
+        @Override
+        public String toString() {
+            return "Ray{" +
+                    "head=" + head +
+                    ", direction=" + direction +
+                    '}';
+        }
     }
-}

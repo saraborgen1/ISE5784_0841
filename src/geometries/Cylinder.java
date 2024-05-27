@@ -28,6 +28,7 @@ public class Cylinder extends Tube {
     public Vector getNormal(Point p) {
         Point point = axis.getHead();
         Vector vector = axis.getDirection().normalize();
+        Ray ray=new Ray(point, vector);
 
         // Check if the point is on the bottom base of the cylinder.
         if (p.equals(point) || Util.isZero(p.subtract(point).dotProduct(vector))) {
@@ -36,8 +37,8 @@ public class Cylinder extends Tube {
         }
 
         // Check if the point is on the top base of the cylinder.
-        if ( p.equals(point.add(vector.scale(height)))||
-                Util.isZero(p.subtract(point.add(vector.scale(height))).dotProduct(vector)))
+        if ( p.equals(ray.getPoint(height))||
+                Util.isZero(p.subtract(ray.getPoint(height)).dotProduct(vector)))
             // Normal points in the direction of the axis.
             return vector;
 
