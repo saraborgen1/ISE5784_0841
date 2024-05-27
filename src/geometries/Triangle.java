@@ -49,5 +49,4 @@ public class Triangle extends Polygon{
         // Otherwise, no intersection with the triangle
         return null;
     }
-
 }

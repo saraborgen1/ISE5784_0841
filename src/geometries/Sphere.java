@@ -55,7 +55,7 @@ public class Sphere extends RadialGeometry {
         double d = Math.sqrt(u.lengthSquared() - tm * tm);
 
         // If the distance from ray to sphere center is greater than the sphere radius, ray misses the sphere
-        if (Util.alignZero(d - radius) > 0)
+        if (Util.alignZero(d - radius) >= 0)
             return null;
 
         // Calculate half of the chord length
