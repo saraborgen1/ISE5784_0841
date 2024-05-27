@@ -1,6 +1,8 @@
 package geometries;
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Class representing a cylinder in 3D space.
  */
@@ -41,5 +43,9 @@ public class Cylinder extends Tube {
 
         // If the point is on the curved surface of the cylinder, use the Tube's normal calculation.
         return super.getNormal(p);
+    }
+
+    public List<Point> findIntersections(Ray ray){
+        return null;
     }
 }

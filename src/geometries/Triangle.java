@@ -14,7 +14,26 @@ public class Triangle extends Polygon{
         super(p1, p2, p3);
     }
 
-    public List<Point> findIntsersections(Ray ray){
+    public List<Point> findIntersections(Ray ray){
+        var intersectionPoints=plane.findIntersections(ray);
+        if(intersectionPoints==null)
+            return null;
+
+        Vector v1=this.vertices.get(0).subtract(ray.getHead());
+        Vector v2=this.vertices.get(1).subtract(ray.getHead());
+        Vector v3=this.vertices.get(2).subtract(ray.getHead());
+
+        Vector n1=v1.crossProduct(v2);
+        Vector n2=v2.crossProduct(v3);
+        Vector n3=v3.crossProduct(v1);
+
+        double d1=n1.dotProduct(ray.getDirection());
+        double d2=n2.dotProduct(ray.getDirection());
+        double d3=n3.dotProduct(ray.getDirection());
+
+        if((d1>0&&d2>0&&d3>0)||(d1<0&&d2<0&&d3<0))
+            return List.of(intersectionPoints.get(0));
+
         return null;
     }
 }

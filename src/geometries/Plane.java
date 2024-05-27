@@ -50,8 +50,22 @@ public class Plane implements Geometry{
         return normal;
     }
 
-    public List<Point> findIntsersections(Ray ray){
-        return null;
-    }
+    public List<Point> findIntersections(Ray ray){
+        double numerator = normal.dotProduct(q.subtract(ray.getHead()));
+        double denominator = normal.dotProduct(ray.getDirection());
 
+        if (denominator == 0) {
+            return null;
+        }
+
+        double t=numerator/denominator;
+
+        if (t <= 0) {
+            return null;
+        }
+
+        Point p=ray.getHead().add(ray.getDirection().scale(t));
+
+        return List.of(p);
+    }
 }

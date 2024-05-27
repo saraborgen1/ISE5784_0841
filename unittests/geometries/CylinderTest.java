@@ -69,4 +69,8 @@ class CylinderTest {
                 "ERROR: getNormal() wrong result for point at center of bottom base"
         );
     }
+
+    @Test
+    void testFindIntersections() {
+    }
 }

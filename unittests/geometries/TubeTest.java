@@ -37,4 +37,8 @@ class TubeTest {
                 "ERROR: No exception thrown for point on the axis of the tube"
         );
     }
+
+    @Test
+    void testFindIntersections() {
+    }
 }

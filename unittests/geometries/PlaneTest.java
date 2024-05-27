@@ -4,6 +4,8 @@ import primitives.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -16,6 +18,10 @@ class PlaneTest {
      * assertEquals
      */
     private final double DELTA = 0.000001;
+    private final Point p1 = new Point(1, 0, 0);
+    private final Point p2 = new Point(0, 1, 0);
+    private final Point p3 = new Point(0, 0, 1);
+    private final Plane plane = new Plane(p1, p2, p3);
 
     /**
      * Test method for {@link geometries.Plane#Plane(Point, Point, Point)}.
@@ -57,11 +63,6 @@ class PlaneTest {
      */
     @Test
     void testGetNormal() {
-        Point p1 = new Point(1, 0, 0);
-        Point p2 = new Point(0, 1, 0);
-        Point p3 = new Point(0, 0, 1);
-        Plane plane = new Plane(p1, p2, p3);
-
         // ============ Equivalence Partitions Tests ==============
         /*
          *TC01:Test that the normal vector has a length of 1
@@ -81,5 +82,36 @@ class PlaneTest {
                 plane.getNormal().normalize(),
                 "ERROR: getNormal() wrong result"
         );
+    }
+
+    @Test
+    void testFindIntersections() {
+        //וקטורי עזר
+        final Vector vMinus111 = new Vector(-1, -1, -1);
+        final Vector v111 = new Vector(1, 1, 1);
+        final Vector v001 = new Vector(0, 0, 1);
+
+        //נקודות עזר
+        final Point pOutside1 = new Point(1, 1, 1);
+        final Point pOutside2 = new Point(1 / 3.0, 1 / 3.0, 1 / 3.0);
+
+
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: מחלקה אחת עבור כל קרן שחותכת את המישור.
+        List<Point> result1 = plane.findIntersections(new Ray(pOutside1,vMinus111));
+        assertEquals(1, result1.size(), "TC01: Ray intersects the plane");
+        assertEquals(List.of(pOutside2), result1, "TC01: Ray intersects the plane at (1/3, 1/3, 1/3)");
+
+        // TC02: Ray does not intersect the plane
+        List<Point> result2 = plane.findIntersections(new Ray(pOutside1,v111));
+        assertNull(result2, "TC02: Ray does not intersect the plane");
+
+        // =============== Boundary Values Tests ==================
+        //הקרן כן מקבילה למישור
+        // TC11:
+
+        //TC12:
+        //TC13:
+        //TC14:
     }
 }
