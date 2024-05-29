@@ -46,21 +46,21 @@ public class Point {
 
     /**
      * Calculates the squared distance between this Point and another Point.
-     * @param p1 The other Point.
+     * @param point The other Point.
      * @return  The squared distance between the two Points.
      */
-    public double distanceSquared(Point p1) {
-        Double3 temp=this.xyz.subtract(p1.xyz);
+    public double distanceSquared(Point point) {
+        Double3 temp=this.xyz.subtract(point.xyz);
         return (temp.d1*temp.d1+temp.d2*temp.d2+temp.d3*temp.d3);
     }
 
     /**
      * Calculates the distance between this Point and another Point.
-     * @param p1 The other Point.
+     * @param point The other Point.
      * @return The distance between the two Points.
      */
-    public double distance(Point p1) {
-        return Math.sqrt(distanceSquared(p1));
+    public double distance(Point point) {
+        return Math.sqrt(distanceSquared(point));
     }
 
     @Override

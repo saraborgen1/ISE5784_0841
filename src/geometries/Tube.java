@@ -21,13 +21,13 @@ public class Tube extends RadialGeometry{
 
     /**
      * Returns the normal vector to the tube at a given point.
-     * @param p The point on the surface of the tube.
+     * @param point The point on the surface of the tube.
      * @return The normal vector at the given point.
      */
-    public Vector getNormal(Point p) {
-        double t=axis.getDirection().dotProduct(p.subtract(axis.getHead()));
-        Point o=axis.getPoint(t);
-        return p.subtract(o).normalize();
+    public Vector getNormal(Point point) {
+        double t=axis.getDirection().dotProduct(point.subtract(axis.getHead()));
+        Point helpPoint=axis.getPoint(t);
+        return point.subtract(helpPoint).normalize();
     }
 
     public List<Point> findIntersections(Ray ray){

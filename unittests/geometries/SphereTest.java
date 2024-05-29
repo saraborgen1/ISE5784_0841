@@ -1,4 +1,5 @@
 package geometries;
+
 import primitives.*;
 
 import org.junit.jupiter.api.Test;
@@ -23,12 +24,10 @@ class SphereTest {
         Sphere sphere = new Sphere(Point.ZERO, 1);
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         *TC01: Test normal at a specific point on the sphere's surface
-         */
+        //TC01: Test normal at a specific point on the sphere's surface
         assertEquals(
-                new Vector(1,0,0),
-                sphere.getNormal(p100).normalize(),
+                new Vector(1, 0, 0).normalize(),
+                sphere.getNormal(p100),
                 "ERROR: getNormal() wrong result"
         );
     }
@@ -46,7 +45,7 @@ class SphereTest {
         final Point gp3 = Point.ZERO;
         final Point gp4 = new Point(2, 0, 0);
         final Point gp5 = new Point(1, 1, 0);
-        final Point gp6= new Point(1.8867496997597595,0.4622498999199199,0.0);
+        final Point gp6 = new Point(1.8867496997597595, 0.4622498999199199, 0.0);
 
         //Lists of points to help with calculations
         final var exp1 = List.of(gp1, gp2);
@@ -56,9 +55,9 @@ class SphereTest {
         final Vector v310 = new Vector(3, 1, 0);
         final Vector vMinus310 = new Vector(-3, -1, 0);
         final Vector v110 = new Vector(1, 1, 0);
-        final Vector v300= new Vector (3, 0, 0);
-        final Vector vMinus300= new Vector (-3, 0, 0);
-        final Vector vMinus010= new Vector(0, -1, 0);
+        final Vector v300 = new Vector(3, 0, 0);
+        final Vector vMinus300 = new Vector(-3, 0, 0);
+        final Vector vMinus010 = new Vector(0, -1, 0);
 
         //Points to help with calculations
         final Point pOutside = new Point(-1, 0, 0);
@@ -117,7 +116,7 @@ class SphereTest {
         assertEquals(List.of(gp4), result14, "Ray starts at sphere and goes through the center");
 
         // TC15: Ray starts inside (1 point)
-        final var result15 = sphere.findIntersections(new Ray(pInside,vMinus300));
+        final var result15 = sphere.findIntersections(new Ray(pInside, vMinus300));
         assertEquals(1, result15.size(), "Wrong number of points");
         assertEquals(List.of(gp3), result15, "Ray starts inside and goes through the center");
 
@@ -134,7 +133,7 @@ class SphereTest {
 
         // TC18: Ray starts after sphere (0 points)
         assertNull(
-                sphere.findIntersections(new Ray(pOutside,vMinus300)),
+                sphere.findIntersections(new Ray(pOutside, vMinus300)),
                 "Ray starts after sphere and goes through the center outside"
         );
 

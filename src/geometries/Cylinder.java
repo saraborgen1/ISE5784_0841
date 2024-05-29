@@ -22,28 +22,28 @@ public class Cylinder extends Tube {
 
     /**
      * Returns the normal vector to the cylinder at a given point.
-     * @param p The point on the surface of the cylinder.
+     * @param point The point on the surface of the cylinder.
      * @return The normal vector at the given point.
      */
-    public Vector getNormal(Point p) {
-        Point point = axis.getHead();
+    public Vector getNormal(Point point) {
+        Point helpPoint = axis.getHead();
         Vector vector = axis.getDirection().normalize();
-        Ray ray=new Ray(point, vector);
+        Ray ray=new Ray(helpPoint, vector);
 
         // Check if the point is on the bottom base of the cylinder.
-        if (p.equals(point) || Util.isZero(p.subtract(point).dotProduct(vector))) {
+        if (point.equals(helpPoint) || Util.isZero(point.subtract(helpPoint).dotProduct(vector))) {
             // Normal points in the opposite direction of the axis.
             return vector.scale(-1);
         }
 
         // Check if the point is on the top base of the cylinder.
-        if ( p.equals(ray.getPoint(height))||
-                Util.isZero(p.subtract(ray.getPoint(height)).dotProduct(vector)))
+        if ( point.equals(ray.getPoint(height))||
+                Util.isZero(point.subtract(ray.getPoint(height)).dotProduct(vector)))
             // Normal points in the direction of the axis.
             return vector;
 
         // If the point is on the curved surface of the cylinder, use the Tube's normal calculation.
-        return super.getNormal(p);
+        return super.getNormal(point);
     }
 
     public List<Point> findIntersections(Ray ray){

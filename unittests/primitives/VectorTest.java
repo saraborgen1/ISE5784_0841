@@ -23,18 +23,14 @@ class VectorTest {
     void testConstructor() {
 
         // =============== Boundary Values Tests ==================
-        /*
-         * TC01: Test constructor with zero vector, should throw IllegalArgumentException
-         */
+        //TC01: Test constructor with zero vector, should throw IllegalArgumentException
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Vector(0, 0, 0),
                 "ERROR: zero vector does not throw an exception"
         );
 
-        /*
-         * TC02: Test constructor with zero Double3 object, should throw IllegalArgumentException
-         */
+        //TC02: Test constructor with zero Double3 object, should throw IllegalArgumentException
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Vector(Double3.ZERO),
@@ -52,9 +48,7 @@ class VectorTest {
         Vector v3 = new Vector(-1, -2, -3);
 
         // =============== Boundary Values Tests ==================
-        /*
-         * TC01: Test adding a vector with its negative, should throw IllegalArgumentException
-         */
+        //TC01: Test adding a vector with its negative, should throw IllegalArgumentException
         assertThrows(
                 IllegalArgumentException.class,
                 () -> v1.add(v3),
@@ -62,10 +56,12 @@ class VectorTest {
         );
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01: Test adding two vectors, should result in the correct vector
-         */
-        assertEquals(v3, v1.add(v2), "ERROR: Vector + Vector does not work correctly");
+        //TC01: Test adding two vectors, should result in the correct vector
+        assertEquals(
+                v3,
+                v1.add(v2),
+                "ERROR: Vector + Vector does not work correctly"
+        );
     }
 
     /**
@@ -76,9 +72,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 3);
 
         // =============== Boundary Values Tests ==================
-        /*
-         *TC01:Test subtracting a vector from itself, should throw IllegalArgumentException
-         */
+        //TC01:Test subtracting a vector from itself, should throw IllegalArgumentException
         assertThrows(
                 IllegalArgumentException.class,
                 () -> v1.subtract(v1),
@@ -86,9 +80,7 @@ class VectorTest {
         );
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01:Test subtracting a vector, should result in the correct vector
-         */
+        //TC01:Test subtracting a vector, should result in the correct vector
         assertEquals(
                 new Vector(3, 6, 9),
                 v1.subtract(new Vector(-2, -4, -6)),
@@ -104,9 +96,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 3);
 
         // =============== Boundary Values Tests ==================
-        /*
-         * TC01:Test scaling a vector by zero, should throw IllegalArgumentException
-         */
+        //TC01:Test scaling a vector by zero, should throw IllegalArgumentException
         assertThrows(
                 IllegalArgumentException.class,
                 () -> v1.scale(0),
@@ -114,9 +104,7 @@ class VectorTest {
         );
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01:Test scaling a vector by a number, should result in the correct vector
-         */
+        //TC01:Test scaling a vector by a number, should result in the correct vector
         assertEquals(
                 new Vector(3, 6, 9),
                 v1.scale(3),
@@ -134,9 +122,7 @@ class VectorTest {
         Vector v3 = new Vector(-2, -4, -6);
 
         // =============== Boundary Values Tests ==================
-        /*
-         * TC01:test dot product of orthogonal vectors, should be zero
-         */
+        //TC01:test dot product of orthogonal vectors, should be zero
         assertEquals(
                 0,
                 v1.dotProduct(v2),
@@ -145,9 +131,7 @@ class VectorTest {
         );
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01: Test dot product of vectors, should result in the correct value
-         */
+        //TC01: Test dot product of vectors, should result in the correct value
         assertEquals(
                 -28,
                 v1.dotProduct(v3),
@@ -166,9 +150,7 @@ class VectorTest {
         Vector v3 = new Vector(0, 3, -2);
 
         // =============== Boundary Values Tests ==================
-        /*
-         * TC01:Test cross product of parallel vectors, should throw IllegalArgumentException
-         */
+        //TC01:Test cross product of parallel vectors, should throw IllegalArgumentException
         assertThrows(
                 IllegalArgumentException.class,
                 () -> v1.crossProduct(v2),
@@ -176,32 +158,27 @@ class VectorTest {
         );
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01:Test cross product length correctness
-         */
+        //TC01:Test cross product length correctness
+        Vector vr = v1.crossProduct(v3);
         assertEquals(
-                v1.crossProduct(v3).length(),
                 v1.length() * v3.length(),
+                vr.length(),
                 DELTA,
                 "ERROR: crossProduct() wrong result length"
         );
 
-        /*
-         * TC02:Test if the result is orthogonal to the first operand
-         */
+        //TC02:Test if the result is orthogonal to the first operand
         assertEquals(
                 0,
-                v1.crossProduct(v3).dotProduct(v1),
+                vr.dotProduct(v1),
                 DELTA,
                 "ERROR: crossProduct() result is not orthogonal to its first operand"
         );
 
-        /*
-         * TC03: Test if the result is orthogonal to the second operand
-         */
+         //TC03: Test if the result is orthogonal to the second operand
         assertEquals(
                 0,
-                v1.crossProduct(v3).dotProduct(v3),
+                vr.dotProduct(v3),
                 DELTA,
                 "ERROR: crossProduct() result is not orthogonal to its second operand"
         );
@@ -215,9 +192,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 2);
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01:Test length squared, should result in the correct value
-         */
+        //TC01:Test length squared, should result in the correct value
         assertEquals(
                 9,
                 v1.lengthSquared(),
@@ -234,9 +209,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 2);
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01: Test length, should result in the correct value
-         */
+        //TC01: Test length, should result in the correct value
         assertEquals(
                 3,
                 v1.length(),
@@ -253,9 +226,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 2);
 
         // ============ Equivalence Partitions Tests ==============
-        /*
-         * TC01:Test if the normalized vector is a unit vector
-         */
+        //TC01:Test if the normalized vector is a unit vector
         assertEquals(
                 1,
                 v1.normalize().length(),
@@ -263,18 +234,14 @@ class VectorTest {
                 "ERROR: the normalized vector is not a unit vector"
         );
 
-        /*
-         * TC02:Test if the normalized vector is parallel to the original one
-         */
+        //TC02:Test if the normalized vector is parallel to the original one
         assertThrows(
                 IllegalArgumentException.class,
                 () -> v1.crossProduct(v1.normalize()),
                 "ERROR: the normalized vector is not parallel to the original one"
         );
 
-        /*
-         * TC03:Test if the normalized vector is not opposite to the original one
-         */
+         //TC03:Test if the normalized vector is not opposite to the original one
         assertTrue(
                 v1.dotProduct(v1.normalize()) > 0,
                 "ERROR: the normalized vector is opposite to the original one"

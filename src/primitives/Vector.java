@@ -20,12 +20,12 @@ public class Vector extends Point {
 
     /**
      * Constructor to create a vector from a Double3 object.
-     * @param double3 The Double3 object containing the coordinates.
+     * @param xyz The Double3 object containing the coordinates.
      */
-    public Vector(Double3 double3) {
-        super(double3);
+    public Vector(Double3 xyz) {
+        super(xyz);
         // Check if the vector is a zero vector and throw an exception if true.
-        if(xyz.equals(Double3.ZERO))
+        if(this.xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector cannot be initialized with zero coordinates.");
     }
 
@@ -93,9 +93,6 @@ public class Vector extends Point {
      */
     public Vector normalize() {
         double len = length();
-        if (len == 0) {
-            throw new IllegalArgumentException("Cannot normalize zero vector");
-        }
         return new Vector(this.xyz.d1 / len, this.xyz.d2 / len, this.xyz.d3 / len);
     }
 

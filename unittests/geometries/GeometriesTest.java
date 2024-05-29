@@ -5,14 +5,27 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for geometries.Geometries class
+ */
 class GeometriesTest {
 
+    /**
+     * Test method for {@link geometries.Geometries#findIntersections(Ray)}.
+     */
     @Test
     void testFindIntersections() {
         Geometries geometries = new Geometries(
                 new Sphere(new Point(0, 0, -5), 1),
-                new Triangle(new Point(-2, -2, -2), new Point(2, -2, -2), new Point(0, 2, -2)),
-                new Plane(new Point(0, 0, -10), new Vector(0, 0, -1))
+                new Triangle(
+                        new Point(-2, -2, -2),
+                        new Point(2, -2, -2),
+                        new Point(0, 2, -2)
+                ),
+                new Plane(
+                        new Point(0, 0, -10),
+                        new Vector(0, 0, -1)
+                )
         );
 
         // ============ Equivalence Partitions Tests ==============

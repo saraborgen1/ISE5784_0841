@@ -13,8 +13,6 @@
          * @param direction The direction Vector of the Ray.
          */
         public Ray(Point head, Vector direction) {
-            if (direction.length() == 0)
-                throw new IllegalArgumentException("Ray direction vector cannot be the zero vector.");
             this.head = head;
             this.direction = direction.normalize();
         }

@@ -43,10 +43,10 @@ public class Plane implements Geometry{
 
     /**
      * Returns the normal vector to the plane at a given point.
-     * @param p The point on the geometry.
+     * @param point The point on the geometry.
      * @return The normal vector.
      */
-    public Vector getNormal(Point p){
+    public Vector getNormal(Point point){
         return normal;
     }
 
@@ -56,28 +56,21 @@ public class Plane implements Geometry{
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
     public List<Point> findIntersections(Ray ray) {
-        // Calculate numerator of the parametric equation
+
         double numerator = normal.dotProduct(q.subtract(ray.getHead()));
-        // Calculate denominator of the parametric equation
         double denominator = normal.dotProduct(ray.getDirection());
 
-        // If the denominator is 0, the ray is parallel to the plane
         if (denominator == 0) {
             return null;
         }
 
-        // Calculate parameter t of intersection point
         double t = numerator / denominator;
 
-        // If t is less than or equal to 0, the intersection point is behind the ray's head
         if (t <= 0) {
             return null;
         }
 
-        // Calculate intersection point using the parametric equation of the ray
         Point p = ray.getPoint(t);
-
-        // Return a list containing the intersection point
         return List.of(p);
     }
 }

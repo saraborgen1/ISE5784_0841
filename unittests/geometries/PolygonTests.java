@@ -26,7 +26,6 @@ public class PolygonTests {
     @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
-
         // TC01: Correct concave quadrangular with vertices in correct order
         assertDoesNotThrow(() -> new Polygon(new Point(0, 0, 1),
                         new Point(1, 0, 0),
@@ -65,7 +64,6 @@ public class PolygonTests {
         );
 
         // =============== Boundary Values Tests ==================
-
         // TC10: Vertex on a side of a quadrangular
         assertThrows(
                 IllegalArgumentException.class, //
@@ -95,7 +93,6 @@ public class PolygonTests {
                         new Point(0, 1, 0)),
                 "Constructed a polygon with vertice on a side"
         );
-
     }
 
     /**
@@ -118,15 +115,19 @@ public class PolygonTests {
         // generate the test result
         Vector result = pol.getNormal(new Point(0, 0, 1));
         // ensure |result| = 1
-        assertEquals(1, result.length(), DELTA, "Polygon's normal is not a unit vector");
+        assertEquals(
+                1,
+                result.length(),
+                DELTA,
+                "Polygon's normal is not a unit vector"
+        );
         // ensure the result is orthogonal to all the edges
         for (int i = 0; i < 3; ++i)
-            assertEquals(0d, result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])), DELTA,
-                    "Polygon's normal is not orthogonal to one of the edges");
+            assertEquals(
+                    0d,
+                    result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])),
+                    DELTA,
+                    "Polygon's normal is not orthogonal to one of the edges"
+            );
     }
-
-    @Test
-    void testFindIntersections() {
-    }
-
 }

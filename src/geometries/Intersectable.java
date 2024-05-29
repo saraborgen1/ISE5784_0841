@@ -5,7 +5,7 @@ import primitives.*;
 import java.util.List;
 
 /**
- *Interface representing an intersectable object in 3D space.
+ *Interface representing an intersect object in 3D space.
  */
 public interface Intersectable {
     /**
