@@ -17,7 +17,6 @@ public class Geometries implements Intersectable {
 
     /**
      * Constructor for Geometries initializing the list with given geometries.
-     *
      * @param geometries List of geometries to add to the composite.
      */
     public Geometries(Intersectable... geometries) {

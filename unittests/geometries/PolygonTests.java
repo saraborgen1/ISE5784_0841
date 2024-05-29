@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import geometries.Polygon;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
+
+import java.util.List;
 
 /**
  * Testing Polygons
@@ -122,12 +123,94 @@ public class PolygonTests {
                 "Polygon's normal is not a unit vector"
         );
         // ensure the result is orthogonal to all the edges
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < 3; ++i){
             assertEquals(
                     0d,
                     result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])),
                     DELTA,
                     "Polygon's normal is not orthogonal to one of the edges"
             );
+        }
+    }
+
+    /**
+     * Test method for {@link geometries.Polygon#findIntersections(Ray)}.
+     */
+    @Test
+    void testFindIntersections() {
+        Polygon polygon = new Polygon(
+                new Point(0, 0, 0),
+                new Point(2, 0, 0),
+                new Point(2, 2, 0),
+                new Point(0, 2, 0)
+        );
+
+        // Points to help with calculations
+        final Point pOutside1 = new Point(0.2, 0.2, -1);
+        final Point pOutside2 = new Point(1.5, 0.5, -1);
+        final Point pOutside3 = new Point(-0.5, -0.5, -1);
+        final Point pOutside4 = new Point(0.5, 0, -1);
+        final Point pOutside5 = new Point(1.5, 0, -1);
+        final Point pInside1 = new Point(0.2, 0.2, 0);
+
+        // Direction vectors to help with calculations
+        final Vector v001 = new Vector(0, 0, 1);
+        final Vector v300 = new Vector(3, 0, 0);
+        final Vector v200 = new Vector(2, 0, 0);
+        final Vector v1050 = new Vector(1,-0.5,0);
+        final Vector vMinus02020 = new Vector(-0.2,-0.2,0);
+
+        // TC01: Inside the Polygon
+        final var result1 = polygon.findIntersections(new Ray(pOutside1, v001));
+        assertNotNull(
+                result1,
+                "Ray crosses polygon but result is null"
+        );
+        assertEquals(
+                1,
+                result1.size(),
+                "ERROR: Wrong number of points"
+        );
+        assertEquals(
+                List.of(pInside1),
+                result1,
+                "ERROR: Wrong intersection point"
+        );
+
+        // TC02: Outside the Polygon (Next to Edge)
+        final var result2 = polygon.findIntersections(new Ray(pOutside2, v1050));
+        assertNull(
+                result2,
+                "TC02 ERROR: Ray's line out of polygon"
+        );
+
+        // TC03: Outside the Polygon (Next to Vertex)
+        final var result3 = polygon.findIntersections(new Ray(pOutside3, vMinus02020));
+        assertNull(
+                result3,
+                "TC03 ERROR: Ray's line out of polygon"
+        );
+
+        // =============== Boundary Values Tests ==================
+        // TC11: On the Edge
+        final var result11 = polygon.findIntersections(new Ray(pOutside4, v001));
+        assertNull(
+                result11,
+                "TC11 ERROR: Ray's line out of polygon"
+        );
+
+        // TC12: On the Vertex
+        final var result12 = polygon.findIntersections(new Ray(pOutside5, v200));
+        assertNull(
+                result12,
+                "TC12 ERROR: Ray's line out of polygon"
+        );
+
+        // TC13: On the Boundary (Edge)
+        final var result13 = polygon.findIntersections(new Ray(pOutside5, v300));
+        assertNull(
+                result13,
+                "TC13 ERROR: Ray's line out of polygon"
+        );
     }
 }

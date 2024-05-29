@@ -1,12 +1,12 @@
 package geometries;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import static primitives.Util.isZero;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
+
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -86,6 +86,51 @@ public class Polygon implements Geometry{
    }
 
    public List<Point> findIntersections(Ray ray){
+      // Find intersection points with the plane
+      var intersectionPoints = plane.findIntersections(ray);
+
+      // If no intersection with the plane, return null
+      if (intersectionPoints == null)
+         return null;
+
+      // The size of the polygon - the amount of the vertices in the polygon
+      int len=size;
+
+      // Calculate vectors from ray head to each vertex of the triangle
+      List<Vector> vectorListV = new ArrayList<>();
+      for (int i=0; i<len; ++i) {
+         vectorListV.add(this.vertices.get(i).subtract(ray.getHead()));
+      }
+
+
+      // Calculate normals of the triangle using cross product of edge vectors
+      List<Vector> vectorListN = new ArrayList<>();
+      for (int i=0; i<len; ++i) {
+         if((i+1)<len)
+            vectorListN.add(vectorListV.get(i).crossProduct(vectorListV.get(i+1)));
+         else
+            vectorListN.add(vectorListV.get(i).crossProduct(vectorListV.get(0)));
+      }
+
+      // Calculate dot product of normals and ray direction
+      List<Double> doubleListD = new ArrayList<>();
+      for (int i=0; i<len; ++i) {
+         doubleListD.add(vectorListN.get(i).dotProduct(ray.getDirection()));
+      }
+
+      // If all dot products have the same sign, the ray intersects the triangle
+      int negative = 0;
+      int positive = 0;
+      for (int i=0; i<len; ++i) {
+         if(doubleListD.get(i)>0)
+            positive++;
+         else
+            negative++;
+      }
+
+      if (negative == len||positive == len)
+         return List.of(intersectionPoints.get(0));
+
       return null;
    }
 }

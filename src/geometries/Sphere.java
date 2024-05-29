@@ -3,6 +3,7 @@ package geometries;
 import primitives.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -70,6 +71,7 @@ public class Sphere extends RadialGeometry {
             return null;
         }
 
+        intersections.sort(Comparator.comparingDouble(p -> p.distance(ray.getHead())));
         return List.copyOf(intersections);
     }
 }
