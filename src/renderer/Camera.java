@@ -220,7 +220,7 @@ public class Camera implements Cloneable{
                 );
             }
 
-            camera.vTo = camera.vTo.normalize();
+                camera.vTo = camera.vTo.normalize();
             camera.vUp = camera.vUp.normalize();
             camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
 
