@@ -94,16 +94,6 @@ public class Camera implements Cloneable{
         return distance;
     }
 
-    //לבדוק עם מישהי
-    @Override
-    public Camera clone() {
-        try {
-            return (Camera) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("Should never happen, since we implement Cloneable");
-        }
-    }
-
     /**
      * Builder class for Camera, following the Builder design pattern.
      */
@@ -224,7 +214,7 @@ public class Camera implements Cloneable{
             camera.vUp = camera.vUp.normalize();
             camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
 
-            return camera.clone();
+            return camera;
         }
     }
 }
