@@ -14,6 +14,8 @@ public class Camera implements Cloneable{
     private Point p0;
     private Vector vTo, vUp, vRight;
     private double width=0,height=0,distance=0;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
 
     /**
      * Default constructor for the Camera class.
@@ -95,6 +97,74 @@ public class Camera implements Cloneable{
     }
 
     /**
+     *  Renders the image by tracing rays through each pixel.
+     *  @throws UnsupportedOperationException as a placeholder for the method
+     * @return the camera object for method chaining
+     */
+    public Camera renderImage() {
+        // Get the number of pixels along the x-axis and y-axis
+        int nx = imageWriter.getNx();
+        int ny = imageWriter.getNy();
+
+        // Loop over each pixel row (y-axis)
+        for(int i=0;i< ny;i++)
+            // Loop over each pixel column (x-axis)
+            for(int j=0;j<nx;j++)
+                // Cast a ray through the current pixel at (j, i)
+                castRay(nx,ny,j,i);
+
+        //throw new UnsupportedOperationException("renderImage not implemented yet");
+        return this;
+    }
+
+    /**
+     * Casts a ray through the specified pixel and determines its color.
+     * @param nX the number of pixels along the x-axis
+     * @param nY the number of pixels along the y-axis
+     * @param j the x-coordinate of the pixel
+     * @param i the y-coordinate of the pixel
+     */
+    private void castRay(int nX, int nY, int j, int i) {
+        Ray ray = constructRay(nX,nY,j,i);
+        Color color= rayTracer.traceRay(ray);;
+        imageWriter.writePixel(j,i,color);
+    }
+
+    /**
+     * Prints a grid on the image with the specified color and interval.
+     * @param interval the interval between grid lines
+     * @param color the color of the grid lines
+     * @return the camera object for method chaining
+     */
+    public Camera printGrid(int interval, Color color) {
+        // Check if the image writer is initialized
+        if (imageWriter == null)
+            throw new MissingResourceException("Image writer was null", getClass().getName(), "");
+
+        int nx = imageWriter.getNx();
+        int ny = imageWriter.getNy();
+
+        for (int j = 0; j < nx; j++) {
+            for (int i = 0; i < ny; i++) {
+                // Check if the current pixel is at the specified interval
+                if (j % interval == 0 || i % interval == 0) {
+                    imageWriter.writePixel(j, i, color);
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Writes the rendered image to a file.
+     * @return the camera object for method chaining
+     */
+    public Camera writeToImage() {
+        imageWriter.writeToImage();
+        return this;
+    }
+
+    /**
      * Builder class for Camera, following the Builder design pattern.
      */
     public static class Builder{
@@ -163,6 +233,26 @@ public class Camera implements Cloneable{
         }
 
         /**
+         * Sets the image writer for the camera.
+         * @param imageWriter the image writer
+         * @return the Builder instance for chaining
+         */
+        public Builder setImageWriter(ImageWriter imageWriter) {
+            camera.imageWriter = imageWriter;
+            return this;
+        }
+
+        /**
+         * Sets the ray tracer for the camera.
+         * @param rayTracer the ray tracer
+         * @return the Builder instance for chaining
+         */
+        public Builder setRayTracer(RayTracerBase rayTracer) {
+            camera.rayTracer = rayTracer;
+            return this;
+        }
+
+        /**
          * Builds the Camera object.
          * @return the constructed Camera object
          */
@@ -209,8 +299,22 @@ public class Camera implements Cloneable{
                         "distance"
                 );
             }
+            if (camera.imageWriter == null) {
+                throw new MissingResourceException(
+                        MISSING_RESOURCE_MESSAGE,
+                        CAMERA_CLASS_NAME,
+                        "imageWriter"
+                );
+            }
+            if (camera.rayTracer == null) {
+                throw new MissingResourceException(
+                        MISSING_RESOURCE_MESSAGE,
+                        CAMERA_CLASS_NAME,
+                        "rayTracer"
+                );
+            }
 
-                camera.vTo = camera.vTo.normalize();
+            camera.vTo = camera.vTo.normalize();
             camera.vUp = camera.vUp.normalize();
             camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
 
