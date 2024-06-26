@@ -3,6 +3,8 @@ import primitives.*;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 /**
  * Class representing a plane in 3D space.
  */
@@ -12,15 +14,15 @@ public class Plane implements Geometry{
 
     /**
      * Constructs a new Plane from three points.
-     * @param p1 The first point.
-     * @param p2 The second point.
-     * @param p3 The third point.
+     * @param point1 The first point.
+     * @param point2 The second point.
+     * @param point3 The third point.
      */
-    public Plane(Point p1, Point p2, Point p3) {
-        Vector v1=p2.subtract(p1);
-        Vector v2=p3.subtract(p1);
-        this.normal=v1.crossProduct(v2).normalize();
-        this.q=p1;
+    public Plane(Point point1, Point point2, Point point3) {
+        Vector vector1=point2.subtract(point1);
+        Vector vector2=point3.subtract(point1);
+        this.normal=vector1.crossProduct(vector2).normalize();
+        this.q=point1;
     }
 
     /**
@@ -60,7 +62,7 @@ public class Plane implements Geometry{
         double numerator = normal.dotProduct(q.subtract(ray.getHead()));
         double denominator = normal.dotProduct(ray.getDirection());
 
-        if (denominator == 0) {
+        if (isZero(denominator)) {
             return null;
         }
 
@@ -70,7 +72,7 @@ public class Plane implements Geometry{
             return null;
         }
 
-        Point p = ray.getPoint(t);
-        return List.of(p);
+        Point point = ray.getPoint(t);
+        return List.of(point);
     }
 }

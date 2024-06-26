@@ -18,7 +18,7 @@ public class Camera implements Cloneable{
     private RayTracerBase rayTracer;
 
     /**
-     * Default constructor for the Camera class.
+     * Private Default constructor for the Camera class.
      * Initializes the camera's width, height, and distance to zero.
      */
     private Camera(){
@@ -113,7 +113,6 @@ public class Camera implements Cloneable{
                 // Cast a ray through the current pixel at (j, i)
                 castRay(nx,ny,j,i);
 
-        //throw new UnsupportedOperationException("renderImage not implemented yet");
         return this;
     }
 

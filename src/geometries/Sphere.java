@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static primitives.Util.*;
+
 /**
  * Class representing a sphere in 3D space.
  */
@@ -49,22 +51,22 @@ public class Sphere extends RadialGeometry {
         double tm = ray.getDirection().dotProduct(u);
         double d = Math.sqrt(u.lengthSquared() - tm * tm);
 
-        if (Util.alignZero(d - radius) >= 0)
+        if (alignZero(d - radius) >= 0)
             return null;
 
         double th = Math.sqrt(radius * radius - d * d);
         double t1 = tm - th;
         double t2 = tm + th;
 
-        if (Util.alignZero(t1) <= 0 && Util.alignZero(t2) <= 0) {
+        if (alignZero(t1) <= 0 && alignZero(t2) <= 0) {
             return null;
         }
 
         List<Point> intersections = new ArrayList<>();
 
-        if (Util.alignZero(t1) > 0)
+        if (alignZero(t1) > 0)
             intersections.add(ray.getPoint(t1));
-        if (Util.alignZero(t2) > 0)
+        if (alignZero(t2) > 0)
             intersections.add(ray.getPoint(t2));
 
         if (intersections.isEmpty()) {

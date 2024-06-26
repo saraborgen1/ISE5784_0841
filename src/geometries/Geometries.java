@@ -25,13 +25,10 @@ public class Geometries implements Intersectable {
 
     /**
      * Adds given geometries to the composite.
-     *
      * @param geometries Geometries to add.
      */
     public void add(Intersectable... geometries) {
-        if (geometries != null) {
-            this.geometries.addAll(List.of(geometries));
-        }
+        this.geometries.addAll(List.of(geometries));
     }
 
     /**
@@ -42,14 +39,14 @@ public class Geometries implements Intersectable {
      */
     public List<Point> findIntersections(Ray ray) {
 
-        List<Point> pointsList = null;
-        for (Intersectable intersectable : geometries) {
-            List<Point> geometryIntersections = intersectable.findIntersections(ray);
+        List<Point> result = null;
+        for (Intersectable geometry : geometries) {
+            List<Point> geometryIntersections = geometry.findIntersections(ray);
             if (geometryIntersections != null) {
-                if (pointsList == null) pointsList = new LinkedList<>();
-                pointsList.addAll(geometryIntersections);
+                if (result == null) result = new LinkedList<>();
+                result.addAll(geometryIntersections);
             }
         }
-        return pointsList;
+        return result;
     }
 }

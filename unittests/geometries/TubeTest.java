@@ -16,7 +16,13 @@ class TubeTest {
      */
     @Test
     void testGetNormal() {
-        Tube tube = new Tube(new Ray(new Point(1, 1, 1), new Vector(0, 1, 0)), 1);
+        Tube tube = new Tube(
+                new Ray(
+                        new Point(1, 1, 1),
+                        new Vector(0, 1, 0)
+                ),
+                1
+        );
 
         // ============ Equivalence Partitions Tests ==============
         //TC01:Test normal at a general point on the surface of the tube

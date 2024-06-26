@@ -8,6 +8,9 @@ import renderer.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.awt.Color.*;
+
+
 public class ImageWriterTest {
 
     @Test
@@ -19,45 +22,42 @@ public class ImageWriterTest {
         int rows = 10;
         int columns = 16;
 
-        // יצירת אובייקט ImageWriter
         ImageWriter imageWriter = new ImageWriter("grid_image", width, height);
 
-        // הגדרת הצבעים
-        Color yellow = new Color(255, 255, 0); // צבע צהוב
-        Color red = new Color(255, 0, 0); // צבע אדום
+        Color yellow = new Color(YELLOW);
+        Color red = new Color(RED);
 
-        // מילוי הרקע בצבע צהוב
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                imageWriter.writePixel(i, j, yellow);
+        // background fill
+        for (int j = 0; j < width; j++) {
+            for (int i = 0; i < height; i++) {
+                imageWriter.writePixel(j, i, yellow);
             }
         }
 
-        // ציור קווי הרשת בצבע אדום
+        // Drawing the grid lines
         int rowHeight = height / rows;
         int colWidth = width / columns;
 
-        // ציור קווים אופקיים
+        // Draw horizontal lines
         for (int row = 0; row <= rows; row++) {
             int y = row * rowHeight;
-            if (y < height) { // בדיקה שהאינדקס בגבולות
-                for (int col = 0; col < width; col++) {
-                    imageWriter.writePixel(col, y, red);
+            if (y < height) {
+                for (int x = 0; x < width; x++) {
+                    imageWriter.writePixel(x, y, red);
                 }
             }
         }
 
-        // ציור קווים אנכיים
+        // Draw vertical lines
         for (int col = 0; col <= columns; col++) {
             int x = col * colWidth;
             if (x < width) { // בדיקה שהאינדקס בגבולות
-                for (int row = 0; row < height; row++) {
-                    imageWriter.writePixel(x, row, red);
+                for (int y = 0; y < height; y++) {
+                    imageWriter.writePixel(x, y, red);
                 }
             }
         }
 
-        // כתיבת התמונה לקובץ
         imageWriter.writeToImage();
     }
 }

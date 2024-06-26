@@ -57,19 +57,18 @@ public class Ray {
             return null;
         }
 
-        Point closestPoint = points.get(0);
-        double closestDistance = head.distance(closestPoint);
+        Point closestPoint = points.getFirst();
+        double distance = head.distance(closestPoint);
 
         // Iterate through each point in the list
         for (Point point : points) {
-            double distance = head.distance(point);
+            double tempDistance = head.distance(point);
             // If the distance is shorter than the current closest distance, update the closest point
-            if (distance < closestDistance) {
-                closestDistance = distance;
+            if (tempDistance < distance) {
+                distance = tempDistance;
                 closestPoint = point;
             }
         }
-
         return closestPoint;
     }
 
