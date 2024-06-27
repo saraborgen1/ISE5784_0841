@@ -12,6 +12,7 @@ public abstract class RayTracerBase {
 
     /**
      * Constructs a new RayTracerBase with the given scene.
+     *
      * @param scene The scene to be traced.
      */
     public RayTracerBase(Scene scene) {
@@ -20,6 +21,7 @@ public abstract class RayTracerBase {
 
     /**
      * Traces the given ray through the scene and returns the color of the intersection point.
+     *
      * @param ray The ray to trace.
      * @return The color of the intersection point.
      */

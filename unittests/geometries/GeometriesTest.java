@@ -32,6 +32,7 @@ class GeometriesTest {
         // TC01: Some of the shapes are intersected but not all of them
         Ray ray = new Ray(new Point(0, 0, -7), new Vector(0, 0, 1));
         var intersections = geometries.findIntersections(ray);
+        assertNotNull(intersections);
         assertEquals(3, intersections.size());
 
         // =============== Boundary Values Tests ==================
@@ -39,21 +40,23 @@ class GeometriesTest {
         Geometries geometries2 = new Geometries();
         ray = new Ray(new Point(0, 0, 0), new Vector(1, 1, 1));
         intersections = geometries2.findIntersections(ray);
-        assertTrue(intersections.isEmpty());
+        assertNull(intersections);
 
         // TC12: None of the shapes is intersected
         ray = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
         intersections = geometries.findIntersections(ray);
-        assertTrue(intersections.isEmpty());
+        assertNull(intersections);
 
         // TC13: Just one shape is intersected
         ray = new Ray(new Point(0, 0, -2.5), new Vector(0, 0, 1));
         intersections = geometries.findIntersections(ray);
+        assertNotNull(intersections);
         assertEquals(1, intersections.size());
 
         // TC14: All the shapes are intersected
         ray = new Ray(new Point(0, 0, 5), new Vector(0, 0, -1));
         intersections = geometries.findIntersections(ray);
+        assertNotNull(intersections);
         assertEquals(4, intersections.size());
    }
 }

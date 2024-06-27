@@ -30,7 +30,7 @@ public class Tube extends RadialGeometry{
         return point.subtract(helpPoint).normalize();
     }
 
-    public List<Point> findIntersections(Ray ray){
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
         return null;
     }
 }

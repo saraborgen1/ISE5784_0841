@@ -3,6 +3,7 @@ package geometries;
 import java.util.List;
 import java.util.ArrayList;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 import primitives.*;
@@ -14,7 +15,7 @@ import primitives.*;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
 
     // List of polygon's vertices
     protected final List<Point> vertices;
@@ -90,7 +91,14 @@ public class Polygon implements Geometry {
         return plane.getNormal();
     }
 
-    public List<Point> findIntersections(Ray ray) {
+    /**
+     * Finds geometric intersections of a given ray with the polygon.
+     *
+     * @param ray The ray to intersect with the polygon.
+     * @return A list of GeoPoint objects representing the intersections.
+     * If there are no intersections, the list will be null.
+     */
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         // Find intersection points with the plane
         var intersections = plane.findIntersections(ray);
 
@@ -98,43 +106,34 @@ public class Polygon implements Geometry {
         if (intersections == null)
             return null;
 
-        // The size of the polygon - the amount of the vertices in the polygon
-        int len = size;
 
         // Calculate vectors from ray head to each vertex of the triangle
         List<Vector> vectors = new ArrayList<>();
-        for (int i = 0; i < len; ++i) {
+        for (int i = 0; i < size; ++i) {
             vectors.add(this.vertices.get(i).subtract(ray.getHead()));
         }
 
         // Calculate normals of the triangle using cross product of edge vectors
         List<Vector> normals = new ArrayList<>();
-        for (int i = 0; i < len; ++i) {
-            if ((i + 1) < len)
+        for (int i = 0; i < size; ++i) {
+            if ((i + 1) < size)
                 normals.add(vectors.get(i).crossProduct(vectors.get(i + 1)));
             else
                 normals.add(vectors.get(i).crossProduct(vectors.getFirst()));
         }
 
         // Calculate dot product of normals and ray direction
-        List<Double> doubles = new ArrayList<>();
-        for (int i = 0; i < len; ++i) {
-            doubles.add(normals.get(i).dotProduct(ray.getDirection()));
+        List<Double> dotProducts = new ArrayList<>();
+        for (Vector normal : normals) {
+            dotProducts.add(alignZero(normal.dotProduct(ray.getDirection())));
         }
 
         // If all dot products have the same sign, the ray intersects the triangle
-        int negative = 0;
-        int positive = 0;
-        for (int i = 0; i < len; ++i) {
-            if (doubles.get(i) > 0)
-                positive++;
-            else
-                negative++;
-        }
+        boolean allPositive = dotProducts.stream().allMatch(d -> d > 0);
+        boolean allNegative = dotProducts.stream().allMatch(d -> d < 0);
 
-        if (negative == len || positive == len)
-            return List.of(intersections.getFirst());
-
+        if (allPositive || allNegative)
+            return List.of(new GeoPoint(this, intersections.getFirst()));
         return null;
     }
 }

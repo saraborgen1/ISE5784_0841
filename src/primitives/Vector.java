@@ -1,12 +1,13 @@
 package primitives;
 
 /**
- *Class representing a Vector in 3D space.
+ * Class representing a Vector in 3D space.
  */
 public class Vector extends Point {
 
     /**
      * Constructor to create a vector from three coordinates.
+     *
      * @param x The x-coordinate.
      * @param y The y-coordinate.
      * @param z The z-coordinate.
@@ -14,23 +15,25 @@ public class Vector extends Point {
     public Vector(double x, double y, double z) {
         super(x, y, z);
         // Check if the vector is a zero vector and throw an exception if true.
-        if(xyz.equals(Double3.ZERO))
+        if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector cannot be initialized with zero coordinates.");
     }
 
     /**
      * Constructor to create a vector from a Double3 object.
+     *
      * @param xyz The Double3 object containing the coordinates.
      */
     public Vector(Double3 xyz) {
         super(xyz);
         // Check if the vector is a zero vector and throw an exception if true.
-        if(this.xyz.equals(Double3.ZERO))
+        if (this.xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector cannot be initialized with zero coordinates.");
     }
 
     /**
      * Adds another vector to this vector.
+     *
      * @param vector The Vector to add.
      * @return A new vector which is the sum of this vector and the given vector.
      */
@@ -40,6 +43,7 @@ public class Vector extends Point {
 
     /**
      * Scales this vector by a given number.
+     *
      * @param number The scaling factor.
      * @return A new vector which is this vector scaled by the given number.
      */
@@ -49,6 +53,7 @@ public class Vector extends Point {
 
     /**
      * Computes the dot product of this vector and another vector.
+     *
      * @param vector The other vector.
      * @return The dot product of the two vectors.
      */
@@ -58,6 +63,7 @@ public class Vector extends Point {
 
     /**
      * Computes the cross product of this vector and another vector.
+     *
      * @param vector The other vector
      * @return A new vector which is the cross product of this vector and the given vector.
      */
@@ -73,6 +79,7 @@ public class Vector extends Point {
 
     /**
      * Computes the squared length of this vector.
+     *
      * @return The squared length of this vector.
      */
     public double lengthSquared() {
@@ -81,6 +88,7 @@ public class Vector extends Point {
 
     /**
      * Computes the length of this vector.
+     *
      * @return The length of this vector.
      */
     public double length() {
@@ -89,6 +97,7 @@ public class Vector extends Point {
 
     /**
      * Normalizes this vector (scales it to length 1).
+     *
      * @return A new normalized vector.
      */
     public Vector normalize() {

@@ -1,11 +1,18 @@
 package geometries;
+
 import primitives.*;
 
 import java.util.List;
 
-public class Triangle extends Polygon{
+import static primitives.Util.alignZero;
+
+/**
+ *  * Triangle class represents a triangle in 3D Cartesian coordinate system.
+ */
+public class Triangle extends Polygon {
     /**
      * Constructor for Triangle class.
+     *
      * @param point1 The first vertex of the triangle.
      * @param point2 The second vertex of the triangle.
      * @param point3 The third vertex of the triangle.
@@ -16,10 +23,11 @@ public class Triangle extends Polygon{
 
     /**
      * Finds intersection points between a ray and the object.
+     *
      * @param ray The ray to intersect with the object.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
-    public List<Point> findIntersections(Ray ray){
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         // Find intersection points with the plane
         var intersections = plane.findIntersections(ray);
 
@@ -38,13 +46,13 @@ public class Triangle extends Polygon{
         Vector normal3 = vector3.crossProduct(vector1);
 
         // Calculate dot product of normals and ray direction
-        double d1 = normal1.dotProduct(ray.getDirection());
-        double d2 = normal2.dotProduct(ray.getDirection());
-        double d3 = normal3.dotProduct(ray.getDirection());
+        double d1 = alignZero(normal1.dotProduct(ray.getDirection()));
+        double d2 = alignZero(normal2.dotProduct(ray.getDirection()));
+        double d3 = alignZero(normal3.dotProduct(ray.getDirection()));
 
         // If all dot products have the same sign, the ray intersects the triangle
         if ((d1 > 0 && d2 > 0 && d3 > 0) || (d1 < 0 && d2 < 0 && d3 < 0))
-            return List.of(intersections.getFirst());
+            return List.of(new GeoPoint(this, intersections.getFirst()));
 
         // Otherwise, no intersection with the triangle
         return null;

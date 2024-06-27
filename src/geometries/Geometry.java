@@ -1,15 +1,38 @@
 package geometries;
+
 import primitives.*;
 
-/**
- * Interface representing a geometric body in 3D space.
- */
-public interface Geometry extends Intersectable {
+/** abstract class representing a geometric body in 3D space.*/
+public abstract class Geometry extends Intersectable {
+
+    /** The emission color of the geometry, initialized to black */
+    protected Color emission = Color.BLACK;
+
+    /**
+     * Returns the emission color of the geometry.
+     *
+     * @return the emission color.
+     */
+    public Color getEmission() {
+        return emission;
+    }
+
+    /**
+     * Sets the emission color of the geometry.
+     *
+     * @param emission The emission color to set.
+     * @return the current geometry instance.
+     */
+    public Geometry setEmission(Color emission) {
+        this.emission = emission;
+        return this;
+    }
 
     /**
      * Calculates the normal vector to the geometry at a given point.
+     *
      * @param point The point on the geometry.
      * @return The normal vector to the geometry at the given point.
      */
-     Vector getNormal(Point point);
+    public abstract Vector getNormal(Point point);
 }
