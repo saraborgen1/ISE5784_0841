@@ -13,6 +13,9 @@ import static java.awt.Color.*;
 
 public class ImageWriterTest {
 
+    public static final Color YELLOW = new Color(java.awt.Color.YELLOW);
+    public static final Color RED = new Color(java.awt.Color.RED);
+
     @Test
     public void testImageCreationWithGrid() {
         // Image resolution
@@ -24,13 +27,10 @@ public class ImageWriterTest {
 
         ImageWriter imageWriter = new ImageWriter("grid_image", width, height);
 
-        Color yellow = new Color(YELLOW);
-        Color red = new Color(RED);
-
         // background fill
         for (int j = 0; j < width; j++) {
             for (int i = 0; i < height; i++) {
-                imageWriter.writePixel(j, i, yellow);
+                imageWriter.writePixel(j, i, YELLOW);
             }
         }
 
@@ -43,7 +43,7 @@ public class ImageWriterTest {
             int y = row * rowHeight;
             if (y < height) {
                 for (int x = 0; x < width; x++) {
-                    imageWriter.writePixel(x, y, red);
+                    imageWriter.writePixel(x, y, RED);
                 }
             }
         }
@@ -53,7 +53,7 @@ public class ImageWriterTest {
             int x = col * colWidth;
             if (x < width) { // בדיקה שהאינדקס בגבולות
                 for (int y = 0; y < height; y++) {
-                    imageWriter.writePixel(x, y, red);
+                    imageWriter.writePixel(x, y, RED);
                 }
             }
         }

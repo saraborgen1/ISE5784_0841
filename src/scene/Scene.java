@@ -4,6 +4,9 @@ import geometries.*;
 import lighting.*;
 import primitives.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Class to represent a 3D scene with various elements such as background color,
  * ambient lighting, and geometries.
@@ -26,6 +29,11 @@ public class Scene {
      * Geometries in the scene, default is an empty model
      */
     public Geometries geometries = new Geometries();
+
+    /**
+     * List of light sources in the scene
+     */
+    public List<LightSource> lights=new LinkedList<>();
 
     /**
      * Constructor to initialize the scene with a name.
@@ -66,6 +74,17 @@ public class Scene {
      */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
+        return this;
+    }
+
+    /**
+     * Setter for the list of light sources.
+     *
+     * @param lights The list of light sources to set.
+     * @return The current Scene object.
+     */
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
         return this;
     }
 }
