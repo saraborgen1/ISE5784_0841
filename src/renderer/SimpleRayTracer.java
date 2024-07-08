@@ -1,9 +1,15 @@
 package renderer;
 
+import geometries.Intersectable.GeoPoint;
 import geometries.*;
-import lighting.LightSource;
+import lighting.*;
 import primitives.*;
+import primitives.Color;
+import primitives.Point;
 import scene.*;
+
+import java.util.List;
+
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -13,6 +19,8 @@ import static primitives.Util.isZero;
  * Simple implementation of a ray tracer.
  */
 public class SimpleRayTracer extends RayTracerBase {
+
+    private static final double DELTA = 0.1;
 
     /**
      * Constructs a new SimpleRayTracer with the given scene.
@@ -86,7 +94,7 @@ public class SimpleRayTracer extends RayTracerBase {
             Vector l = lightSource.getL(geoPoint.point);
             double nl = alignZero(n.dotProduct(l));
             // Check if the light source contributes to the local effects
-            if (nl * nv > 0) {
+            if ((nl * nv > 0)&& unshaded(geoPoint,lightSource,l,n,nl)) {
                 // Get the intensity of the light source at the intersection point
                 Color iL = lightSource.getIntensity(geoPoint.point);
                 // Add the diffusive and specular effects to the color
@@ -132,5 +140,43 @@ public class SimpleRayTracer extends RayTracerBase {
 
         // Calculate the specular component based on the specular factor
         return (kS.scale(specularFactor));
+    }
+
+    /**
+     * Checks if the point is unshaded by any other geometry.
+     *
+     * @param gp The intersection point.
+     * @param light The light source.
+     * @param l The direction vector from the light source to the intersection point.
+     * @param n The normal vector at the intersection point.
+     * @param nl The dot product of the normal and the light direction vectors.
+     * @return True if the point is unshaded, false otherwise.
+     */
+    private boolean unshaded(
+            GeoPoint gp, LightSource light, Vector l, Vector n, double nl){
+        //הופכים את כיוון הוקטור
+        Vector lightDirection = l.scale(-1).normalize();
+        //מזיזים אפסילון בכיוון הנורמל
+        Vector epsVector = n.scale(nl<0? DELTA: -DELTA).normalize();
+        Point point=gp.point.add(epsVector);
+        Ray ray=new Ray(point,lightDirection);
+
+        List<GeoPoint> intersections=scene.geometries.findGeoIntersections(ray);
+        if (intersections==null)
+            return true;
+
+        // Check each intersection point to see if it occludes the light source
+        for (GeoPoint intersection : intersections) {
+            // Calculate d1 (distance from point to light source)
+            double d1 = light.getDistance(intersection.point);
+            // Calculate d2 (distance from original point of ray to intersection point)
+            double d2 = intersection.point.distance(point);
+
+            // If d1 is greater than d2, return false (not occluded)
+            if (d1 > d2)
+                return false;
+        }
+
+        return true;
     }
 }

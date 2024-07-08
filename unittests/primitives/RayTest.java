@@ -96,9 +96,10 @@ class RayTest {
 
         // ============ Boundary Values Tests ==============
         // TC11: list is empty (should return null)
-        points = List.of();
+        points = null;
+        Point closestPoint = ray.findClosestPoint(points);
         assertNull(
-                ray.findClosestPoint(points),
+                closestPoint,
                 "Should have returned null"
         );
 
