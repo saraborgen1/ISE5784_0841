@@ -1,7 +1,9 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,5 +60,5 @@ class GeometriesTest {
         intersections = geometries.findIntersections(ray);
         assertNotNull(intersections);
         assertEquals(4, intersections.size());
-   }
+    }
 }

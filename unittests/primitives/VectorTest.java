@@ -3,7 +3,6 @@ package primitives;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for primitives.Vector class
@@ -175,7 +174,7 @@ class VectorTest {
                 "ERROR: crossProduct() result is not orthogonal to its first operand"
         );
 
-         //TC03: Test if the result is orthogonal to the second operand
+        //TC03: Test if the result is orthogonal to the second operand
         assertEquals(
                 0,
                 vr.dotProduct(v3),
@@ -241,7 +240,7 @@ class VectorTest {
                 "ERROR: the normalized vector is not parallel to the original one"
         );
 
-         //TC03:Test if the normalized vector is not opposite to the original one
+        //TC03:Test if the normalized vector is not opposite to the original one
         assertTrue(
                 v1.dotProduct(v1.normalize()) > 0,
                 "ERROR: the normalized vector is opposite to the original one"

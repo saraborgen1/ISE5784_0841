@@ -1,8 +1,9 @@
 package scene;
 
-import geometries.*;
-import lighting.*;
-import primitives.*;
+import geometries.Geometries;
+import lighting.AmbientLight;
+import lighting.LightSource;
+import primitives.Color;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Scene {
     /**
      * List of light sources in the scene
      */
-    public List<LightSource> lights=new LinkedList<>();
+    public List<LightSource> lights = new LinkedList<>();
 
     /**
      * Constructor to initialize the scene with a name.

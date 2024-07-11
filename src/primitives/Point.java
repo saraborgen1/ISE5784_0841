@@ -5,8 +5,8 @@ package primitives;
  */
 public class Point {
 
-    protected final Double3 xyz;
     public static final Point ZERO = new Point(Double3.ZERO);
+    protected final Double3 xyz;
 
     /**
      * Constructs a new Point with the given coordinates.

@@ -1,14 +1,23 @@
 package geometries;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Material;
+import primitives.Point;
+import primitives.Vector;
 
-/** abstract class representing a geometric body in 3D space.*/
+/**
+ * abstract class representing a geometric body in 3D space.
+ */
 public abstract class Geometry extends Intersectable {
 
-    /** The emission color of the geometry, initialized to black */
+    /**
+     * The emission color of the geometry, initialized to black
+     */
     protected Color emission = Color.BLACK;
 
-    /** The material properties of the geometry, initialized to default material */
+    /**
+     * The material properties of the geometry, initialized to default material
+     */
     private Material material = new Material();
 
     /**

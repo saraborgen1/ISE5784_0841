@@ -1,12 +1,16 @@
 package renderer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import geometries.*;
+import geometries.Geometry;
+import geometries.Plane;
+import geometries.Polygon;
+import geometries.Sphere;
 import org.junit.jupiter.api.Test;
-
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 import scene.Scene;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
@@ -26,11 +30,12 @@ class IntegrationTest {
     /**
      * Checks expected between rays from the camera and a geometry.
      * Computes the total number of expected and compares it to the expected value.
+     *
      * @param expected The expected number of expected
      * @param camera   The camera object
      * @param geometry The geometry to test expected with
-     * @param nX The number of pixels in the X direction of the view plane (resolution width)
-     * @param nY The number of pixels in the Y direction of the view plane (resolution height)
+     * @param nX       The number of pixels in the X direction of the view plane (resolution width)
+     * @param nY       The number of pixels in the Y direction of the view plane (resolution height)
      * @param message  The message to display in case of assertion failure
      */
     private void assertIntersections

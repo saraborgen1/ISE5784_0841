@@ -1,13 +1,15 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
 import static primitives.Util.alignZero;
 
 /**
- *  * Triangle class represents a triangle in 3D Cartesian coordinate system.
+ * * Triangle class represents a triangle in 3D Cartesian coordinate system.
  */
 public class Triangle extends Polygon {
     /**
@@ -27,9 +29,9 @@ public class Triangle extends Polygon {
      * @param ray The ray to intersect with the object.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         // Find intersection points with the plane
-        var intersections = plane.findIntersections(ray);
+        var intersections = plane.findGeoIntersections(ray, maxDistance);
 
         // If no intersection with the plane, return null
         if (intersections == null)
@@ -52,7 +54,7 @@ public class Triangle extends Polygon {
 
         // If all dot products have the same sign, the ray intersects the triangle
         if ((d1 > 0 && d2 > 0 && d3 > 0) || (d1 < 0 && d2 < 0 && d3 < 0))
-            return List.of(new GeoPoint(this, intersections.getFirst()));
+            return List.of(new GeoPoint(this, intersections.getFirst().point));
 
         // Otherwise, no intersection with the triangle
         return null;

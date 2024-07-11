@@ -1,12 +1,14 @@
 package lighting;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Point;
+import primitives.Vector;
 
 /**
  * Class representing a directional light source, which emits light in a specific direction
  * and does not have an attenuation factor over distance.
  */
-public class DirectionalLight extends Light implements LightSource{
+public class DirectionalLight extends Light implements LightSource {
 
     /**
      * The direction of the light.
@@ -19,9 +21,9 @@ public class DirectionalLight extends Light implements LightSource{
      * @param intensity The intensity of the light source.
      * @param direction The direction of the light.
      */
-    public DirectionalLight(Color intensity, Vector direction){
+    public DirectionalLight(Color intensity, Vector direction) {
         super(intensity);
-        this.direction=direction.normalize();
+        this.direction = direction.normalize();
     }
 
     @Override
@@ -30,7 +32,7 @@ public class DirectionalLight extends Light implements LightSource{
     }
 
     @Override
-    public Vector getL( Point point){
+    public Vector getL(Point point) {
         return direction;
     }
 

@@ -1,13 +1,13 @@
 package geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-
-import geometries.Polygon;
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing Polygons
@@ -123,7 +123,7 @@ public class PolygonTests {
                 "Polygon's normal is not a unit vector"
         );
         // ensure the result is orthogonal to all the edges
-        for (int i = 0; i < 3; ++i){
+        for (int i = 0; i < 3; ++i) {
             assertEquals(
                     0d,
                     result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])),
@@ -157,8 +157,8 @@ public class PolygonTests {
         final Vector v001 = new Vector(0, 0, 1);
         final Vector v300 = new Vector(3, 0, 0);
         final Vector v200 = new Vector(2, 0, 0);
-        final Vector v1050 = new Vector(1,-0.5,0);
-        final Vector vMinus02020 = new Vector(-0.2,-0.2,0);
+        final Vector v1050 = new Vector(1, -0.5, 0);
+        final Vector vMinus02020 = new Vector(-0.2, -0.2, 0);
 
         // TC01: Inside the Polygon
         final var result1 = polygon.findIntersections(new Ray(pOutside1, v001));

@@ -1,13 +1,15 @@
 package primitives;
 
-import java.util.List;
-
 import geometries.Intersectable.GeoPoint;
+
+import java.util.List;
 
 /**
  * Class representing a ray in 3D space.
  */
 public class Ray {
+
+    private static final double DELTA = 0.1;
 
     private final Point head;
     private final Vector direction;
@@ -21,6 +23,22 @@ public class Ray {
     public Ray(Point head, Vector direction) {
         this.head = head;
         this.direction = direction.normalize();
+    }
+
+    /**
+     * Constructor for ray deflected by DELTA
+     *
+     * @param head origin
+     * @param n   normal vector
+     * @param direction direction
+     */
+    public Ray(Point head, Vector n, Vector direction) {
+        this.direction = direction.normalize();
+        double nv = n.dotProduct(this.direction);
+        Vector delta  =n.scale(DELTA);
+        if (nv < 0)
+            delta = delta.scale(-1);
+        this.head = head.add(delta);
     }
 
     /**

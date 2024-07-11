@@ -1,6 +1,6 @@
 package lighting;
 
-import primitives.*;
+import primitives.Color;
 
 /**
  * Abstract class representing a light source. This class defines common

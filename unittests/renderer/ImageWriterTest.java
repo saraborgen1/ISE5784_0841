@@ -1,14 +1,7 @@
 package renderer;
 
 import org.junit.jupiter.api.Test;
-
-import primitives.*;
-import renderer.*;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static java.awt.Color.*;
+import primitives.Color;
 
 
 public class ImageWriterTest {

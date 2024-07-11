@@ -1,12 +1,14 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static primitives.Util.*;
+import static primitives.Util.alignZero;
 
 /**
  * Class representing a sphere in 3D space.
@@ -43,7 +45,7 @@ public class Sphere extends RadialGeometry {
      * @param ray The ray to intersect with the object.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
 
         Vector u;
         try {
@@ -77,10 +79,10 @@ public class Sphere extends RadialGeometry {
         List<GeoPoint> intersections = new ArrayList<>();
 
         // Add the intersection point at t1 if it is greater than zero
-        if (alignZero(t1) > 0)
+        if (alignZero(t1) > 0 && alignZero(t1 - maxDistance) <= 0)
             intersections.add(new GeoPoint(this, ray.getPoint(t1)));
         // Add the intersection point at t2 if it is greater than zero
-        if (alignZero(t2) > 0)
+        if (alignZero(t2) > 0 && alignZero(t2 - maxDistance) <= 0)
             intersections.add(new GeoPoint(this, ray.getPoint(t2)));
 
         // If there are no valid intersection points, return null

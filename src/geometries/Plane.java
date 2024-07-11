@@ -1,14 +1,17 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
  * Class representing a plane in 3D space.
- * */
+ */
 public class Plane extends Geometry {
 
     private final Point q;
@@ -64,7 +67,7 @@ public class Plane extends Geometry {
      * @param ray The ray to intersect with the plane.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
 
         double numerator = normal.dotProduct(q.subtract(ray.getHead()));
         double denominator = normal.dotProduct(ray.getDirection());
@@ -75,7 +78,7 @@ public class Plane extends Geometry {
 
         double t = numerator / denominator;
 
-        if (t <= 0) {
+        if (t <= 0|| alignZero(t - maxDistance) >= 0) {
             return null;
         }
 

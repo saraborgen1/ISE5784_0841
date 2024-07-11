@@ -1,16 +1,19 @@
 package lighting;
 
-import static java.awt.Color.*;
-import static java.util.Collections.addAll;
-
+import geometries.Geometry;
+import geometries.Sphere;
+import geometries.Triangle;
 import org.junit.jupiter.api.Test;
-
-import geometries.*;
 import primitives.*;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.SimpleRayTracer;
 import scene.Scene;
-import renderer.*;
 
 import java.util.List;
+
+import static java.awt.Color.BLUE;
+import static java.awt.Color.WHITE;
 
 /**
  * Test rendering a basic image
@@ -18,6 +21,30 @@ import java.util.List;
  * @author Dan
  */
 class LightTests {
+    /**
+     * Shininess value for most of the geometries in the tests
+     */
+    private static final int SHININESS = 301;
+    /**
+     * Diffusion attenuation factor for some of the geometries in the tests
+     */
+    private static final double KD = 0.5;
+    /**
+     * Diffusion attenuation factor for some of the geometries in the tests
+     */
+    private static final Double3 KD3 = new Double3(0.2, 0.6, 0.4);
+    /**
+     * Specular attenuation factor for some of the geometries in the tests
+     */
+    private static final double KS = 0.5;
+    /**
+     * Specular attenuation factor for some of the geometries in the tests
+     */
+    private static final Double3 KS3 = new Double3(0.2, 0.4, 0.3);
+    /**
+     * Radius of the sphere
+     */
+    private static final double SPHERE_RADIUS = 50d;
     /**
      * First scene for some of tests
      */
@@ -27,7 +54,6 @@ class LightTests {
      */
     private final Scene scene2 = new Scene("Test scene")
             .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
-
     /**
      * First camera builder for some of tests
      */
@@ -44,29 +70,6 @@ class LightTests {
             .setLocation(new Point(0, 0, 1000))
             .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
             .setVpSize(200, 200).setVpDistance(1000);
-
-    /**
-     * Shininess value for most of the geometries in the tests
-     */
-    private static final int SHININESS = 301;
-    /**
-     * Diffusion attenuation factor for some of the geometries in the tests
-     */
-    private static final double KD = 0.5;
-    /**
-     * Diffusion attenuation factor for some of the geometries in the tests
-     */
-    private static final Double3 KD3 = new Double3(0.2, 0.6, 0.4);
-
-    /**
-     * Specular attenuation factor for some of the geometries in the tests
-     */
-    private static final double KS = 0.5;
-    /**
-     * Specular attenuation factor for some of the geometries in the tests
-     */
-    private static final Double3 KS3 = new Double3(0.2, 0.4, 0.3);
-
     /**
      * Material for some of the geometries in the tests
      */
@@ -83,16 +86,10 @@ class LightTests {
      * Color of the sphere
      */
     private final Color sphereColor = new Color(BLUE).reduce(2);
-
     /**
      * Center of the sphere
      */
     private final Point sphereCenter = new Point(0, 0, -50);
-    /**
-     * Radius of the sphere
-     */
-    private static final double SPHERE_RADIUS = 50d;
-
     /**
      * The triangles' vertices for the tests with triangles
      */
@@ -288,19 +285,19 @@ class LightTests {
                                         new Vector(1, 1, -0.5)
                                 ),
                                 (new PointLight(
-                                                new Color(400, 300, 200),
-                                                new Point(50, -50, -100)).setKL(0.0001).setKQ(0.0001)
+                                        new Color(400, 300, 200),
+                                        new Point(50, -50, -100)).setKL(0.0001).setKQ(0.0001)
                                 ),
                                 (new SpotLight(
-                                                new Color(500, 300, 150),
-                                                new Point(-30, 50, -50),
-                                                new Vector(1, -1, -1)).setKL(0.0001).setKQ(0.0001)
+                                        new Color(500, 300, 150),
+                                        new Point(-30, 50, -50),
+                                        new Vector(1, -1, -1)).setKL(0.0001).setKQ(0.0001)
                                 )
                         )
         );
 
         camera2.setImageWriter(
-                new ImageWriter("trianglesMultipleLights", 500, 500)
+                        new ImageWriter("trianglesMultipleLights", 500, 500)
                 )
                 .build()
                 .renderImage()

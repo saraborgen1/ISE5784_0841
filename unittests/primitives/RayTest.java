@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class RayTest {
     /**
@@ -104,7 +105,7 @@ class RayTest {
         );
 
         // TC12: closest point is at start of list
-         points = List.of(
+        points = List.of(
                 point4,
                 point2,
                 point3

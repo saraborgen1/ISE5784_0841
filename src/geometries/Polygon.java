@@ -1,12 +1,14 @@
 package geometries;
 
-import java.util.List;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
-
-import primitives.*;
 
 
 /**
@@ -98,9 +100,9 @@ public class Polygon extends Geometry {
      * @return A list of GeoPoint objects representing the intersections.
      * If there are no intersections, the list will be null.
      */
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
         // Find intersection points with the plane
-        var intersections = plane.findIntersections(ray);
+        var intersections = plane.findGeoIntersections(ray,maxDistance);
 
         // If no intersection with the plane, return null
         if (intersections == null)
@@ -133,7 +135,7 @@ public class Polygon extends Geometry {
         boolean allNegative = dotProducts.stream().allMatch(d -> d < 0);
 
         if (allPositive || allNegative)
-            return List.of(new GeoPoint(this, intersections.getFirst()));
+            return List.of(new GeoPoint(this, intersections.getFirst().point));
         return null;
     }
 }

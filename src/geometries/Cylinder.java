@@ -1,10 +1,15 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Util;
+import primitives.Vector;
 
 import java.util.List;
 
-/** Class representing a cylinder in 3D space. */
+/**
+ * Class representing a cylinder in 3D space.
+ */
 public class Cylinder extends Tube {
     private final double height;
 
@@ -26,6 +31,7 @@ public class Cylinder extends Tube {
      * @param point The point on the surface of the cylinder.
      * @return The normal vector at the given point.
      */
+    @Override
     public Vector getNormal(Point point) {
         Point helpPoint = axis.getHead();
         Vector vector = axis.getDirection().normalize();
@@ -47,8 +53,8 @@ public class Cylinder extends Tube {
         return super.getNormal(point);
     }
 
-
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
         return null;
     }
 }

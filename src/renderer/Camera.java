@@ -1,6 +1,9 @@
 package renderer;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.MissingResourceException;
 
@@ -173,10 +176,9 @@ public class Camera implements Cloneable {
      * Builder class for Camera, following the Builder design pattern.
      */
     public static class Builder {
-        private final Camera camera = new Camera();
-
         private static final String MISSING_RESOURCE_MESSAGE = "Missing rendering data";
         private static final String CAMERA_CLASS_NAME = Camera.class.getSimpleName();
+        private final Camera camera = new Camera();
 
         /**
          * Sets the location of the camera.
