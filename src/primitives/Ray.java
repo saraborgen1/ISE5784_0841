@@ -26,20 +26,30 @@ public class Ray {
     }
 
     /**
-     * Constructor for ray deflected by DELTA
+     * Constructor for a ray deflected by DELTA.
      *
-     * @param head origin
-     * @param n   normal vector
-     * @param direction direction
+     * @param head The origin point of the ray.
+     * @param n The normal vector at the point of origin.
+     * @param direction The direction of the ray.
      */
     public Ray(Point head, Vector n, Vector direction) {
+        // Normalize the direction vector
         this.direction = direction.normalize();
+
+        // Calculate the dot product of the normal vector and the direction vector
         double nv = n.dotProduct(this.direction);
-        Vector delta  =n.scale(DELTA);
+
+        // Scale the normal vector by the DELTA value
+        Vector delta = n.scale(DELTA);
+
+        // If the dot product is negative, scale the delta vector by -1
         if (nv < 0)
             delta = delta.scale(-1);
+
+        // Add the delta vector to the origin point to get the new head of the ray
         this.head = head.add(delta);
     }
+
 
     /**
      * Returns the direction vector of the ray.
