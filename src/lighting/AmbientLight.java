@@ -1,7 +1,6 @@
 package lighting;
 
-import primitives.Color;
-import primitives.Double3;
+import primitives.*;
 
 /**
  * Class to represent ambient lighting in a scene.
