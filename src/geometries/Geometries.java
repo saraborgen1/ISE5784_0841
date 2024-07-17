@@ -8,8 +8,8 @@ import java.util.List;
 
 /**
  * Geometries class to represent a collection of geometric shapes
- * Implements the Composite design pattern
- * Class representing a collection of geometric shapes that are intersectable.
+ * Implements the Composite design pattern.
+ * This class represents a collection of geometric shapes that are intersectable.
  */
 public class Geometries extends Intersectable {
 
@@ -43,11 +43,12 @@ public class Geometries extends Intersectable {
      * Finds geometric intersections of a given ray with the composite geometries.
      *
      * @param ray The ray to intersect with the object.
+     * @param maxDistance The maximum distance to consider for intersections.
      * @return A list of GeoPoint objects representing the intersections.
      * If there are no intersections, the list will be empty.
      */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
 
         List<GeoPoint> intersections = null;
 

@@ -1,14 +1,13 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
+import primitives.*;
 
 import java.util.List;
 import java.util.Objects;
 
 
 /**
- * Interface representing an intersect object in 3D space.
+ * Abstract class representing an intersectable object in 3D space.
  */
 public abstract class Intersectable {
 
@@ -27,39 +26,39 @@ public abstract class Intersectable {
     }
 
     /**
-     * find all GeoPoints that intersect with a ray
+     * Finds all GeoPoints that intersect with a ray.
      *
-     * @param ray to find intersections with
-     * @return list of intersection points
+     * @param ray The ray to find intersections with.
+     * @return A list of GeoPoint objects representing the intersections.
+     * If there are no intersections, the list will be empty.
      */
     public final List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray, Double.POSITIVE_INFINITY);
     }
 
-
     /**
-     * Public method findGeoIntersections for finding GeoPoints of intersections
-     * between the intersectable object and a given ray.
+     * Finds GeoPoints of intersections between the intersectable object and a given ray
+     * with a specified maximum distance.
      *
      * @param ray The ray to intersect with the object.
+     * @param maxDistance The maximum distance to consider for intersections.
      * @return A list of GeoPoint objects representing the intersections.
      * If there are no intersections, the list will be empty.
      */
-    public final List<GeoPoint> findGeoIntersections(Ray ray,double maxDistance) {
-        return findGeoIntersectionsHelper(ray,maxDistance);
+    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+        return findGeoIntersectionsHelper(ray, maxDistance);
     }
 
     /**
-     * Protected method findGeoIntersectionsHelper for finding GeoPoints of
-     * intersections between the intersectable object and a given ray. This method
-     * should be implemented in subclasses.
+     * Protected method for finding GeoPoints of intersections between the intersectable object and a given ray.
+     * This method should be implemented in subclasses.
      *
      * @param ray The ray to intersect with the object.
+     * @param maxDistance The maximum distance to consider for intersections.
      * @return A list of GeoPoint objects representing the intersections.
      * If there are no intersections, the list will be empty.
      */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
-
 
     /**
      * A passive data structure (PDS) representing a point of intersection of the ray with the shape
@@ -71,15 +70,15 @@ public abstract class Intersectable {
          */
         public Geometry geometry;
         /**
-         * The intersection point of the ray
+         * The intersection point of the ray.
          */
         public Point point;
 
         /**
          * Constructs a GeoPoint with the given geometry and point.
          *
-         * @param geometry intersecting geometry.
-         * @param point    intersection point of the ray.
+         * @param geometry The intersecting geometry.
+         * @param point The intersection point of the ray.
          */
         public GeoPoint(Geometry geometry, Point point) {
             this.geometry = geometry;

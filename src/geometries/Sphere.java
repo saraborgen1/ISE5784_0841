@@ -1,8 +1,6 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +14,6 @@ import static primitives.Util.alignZero;
 public class Sphere extends RadialGeometry {
 
     private final Point center;
-    private final double DELTA = 0.000001;
 
     /**
      * Constructs a new Sphere with the given center point and radius.
@@ -33,23 +30,25 @@ public class Sphere extends RadialGeometry {
      * Returns the normal vector to the sphere at a given point.
      *
      * @param point The point on the surface of the sphere
-     * @return normal vector at the given point.
+     * @return Normal vector at the given point.
      */
     public Vector getNormal(Point point) {
         return point.subtract(this.center).normalize();
     }
 
     /**
-     * Finds intersection points between a ray and the object.
+     * Finds intersection points between a ray and the sphere.
      *
-     * @param ray The ray to intersect with the object.
+     * @param ray The ray to intersect with the sphere.
+     * @param maxDistance The maximum distance to consider for intersections.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
+    @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
 
         Vector u;
         try {
-            // Calculate vector from ray's head to the center of the object
+            // Calculate vector from ray's head to the center of the sphere
             u = center.subtract(ray.getHead());
         } catch (IllegalArgumentException e) {
             // If the ray's head is at the center, return the point at the radius distance along the ray
@@ -78,10 +77,10 @@ public class Sphere extends RadialGeometry {
 
         List<GeoPoint> intersections = new ArrayList<>();
 
-        // Add the intersection point at t1 if it is greater than zero
+        // Add the intersection point at t1 if it is greater than zero and within the maximum distance
         if (alignZero(t1) > 0 && alignZero(t1 - maxDistance) <= 0)
             intersections.add(new GeoPoint(this, ray.getPoint(t1)));
-        // Add the intersection point at t2 if it is greater than zero
+        // Add the intersection point at t2 if it is greater than zero and within the maximum distance
         if (alignZero(t2) > 0 && alignZero(t2 - maxDistance) <= 0)
             intersections.add(new GeoPoint(this, ray.getPoint(t2)));
 

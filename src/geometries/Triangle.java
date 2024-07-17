@@ -1,8 +1,6 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 
@@ -27,6 +25,7 @@ public class Triangle extends Polygon {
      * Finds intersection points between a ray and the object.
      *
      * @param ray The ray to intersect with the object.
+     * @param maxDistance The maximum distance to consider for intersections.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {

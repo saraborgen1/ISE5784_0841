@@ -1,8 +1,6 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 
@@ -65,24 +63,32 @@ public class Plane extends Geometry {
      * Finds intersection point(s) between a ray and the plane.
      *
      * @param ray The ray to intersect with the plane.
+     * @param maxDistance The maximum distance to consider for intersections.
      * @return A list containing the intersection point(s), or null if no intersection occurs.
      */
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance) {
-
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        // Calculate the numerator in the plane intersection formula
         double numerator = normal.dotProduct(q.subtract(ray.getHead()));
+        // Calculate the denominator in the plane intersection formula
         double denominator = normal.dotProduct(ray.getDirection());
 
+        // If the denominator is zero, the ray is parallel to the plane and there is no intersection
         if (isZero(denominator)) {
             return null;
         }
 
+        // Calculate the distance from the ray's head to the intersection point
         double t = numerator / denominator;
 
-        if (t <= 0|| alignZero(t - maxDistance) >= 0) {
+        // If the distance is less than or equal to zero or greater than the maximum distance, there is no intersection
+        if (t <= 0 || alignZero(t - maxDistance) >= 0) {
             return null;
         }
 
+        // Calculate the intersection point
         Point point = ray.getPoint(t);
+        // Return a list containing the intersection point
         return List.of(new GeoPoint(this, point));
     }
 }
