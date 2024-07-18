@@ -1,10 +1,10 @@
 package renderer;
 
-import geometries.Intersectable;
+import geometries.*;
 import geometries.Intersectable.GeoPoint;
-import lighting.LightSource;
+import lighting.*;
 import primitives.*;
-import scene.Scene;
+import scene.*;
 
 import java.util.List;
 
