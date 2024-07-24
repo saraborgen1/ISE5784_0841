@@ -1,7 +1,6 @@
 package finals;
 
 import org.junit.jupiter.api.Test;
-
 import geometries.*;
 import lighting.*;
 import primitives.*;
@@ -11,41 +10,51 @@ import scene.*;
 import java.util.List;
 
 public class FinalTests {
-    // Create a new scene with the given name
+    // Creating a new scene with the name "A wall with a picture scene"
     private final Scene scene = new Scene("A wall with a picture scene");
 
-    // Initialize the camera with its builder
-    private final Camera.Builder camera = Camera.getBuilder()
-            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-            .setLocation(new Point(0, 0, 1000))
-            .setVpDistance(1000)
-            .setVpSize(800, 600)
-            .setRayTracer(new SimpleRayTracer(scene));
+    // Creating a Camera object with Anti-Aliasing
+    private final Camera.Builder cameraWithAA = Camera.getBuilder()
+            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)) // Setting camera direction
+            .setLocation(new Point(0, 0, 1000)) // Setting camera location
+            .setVpDistance(1000) // Setting view plane distance
+            .setVpSize(800, 600) // Setting view plane size
+            .setRayTracer(new SimpleRayTracer(scene)) // Setting ray tracer
+            .setNumberOfRays(18); // Enabling Anti-Aliasing by setting number of rays
 
-    // Define materials for different objects
+    // Creating a Camera object without Anti-Aliasing
+    private final Camera.Builder cameraWithoutAA = Camera.getBuilder()
+            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)) // Setting camera direction
+            .setLocation(new Point(0, 0, 1000)) // Setting camera location
+            .setVpDistance(1000) // Setting view plane distance
+            .setVpSize(800, 600) // Setting view plane size
+            .setRayTracer(new SimpleRayTracer(scene)) // Setting ray tracer
+            .setNumberOfRays(1); // Disabling Anti-Aliasing by setting number of rays to 1
+
+
+    // Materials for the brick wall
     private final Material brickMaterial = new Material().setKD(0.5).setKS(0.5).setShininess(30);
     private final Material mortarMaterial = new Material().setKD(0.5).setKS(0.5).setShininess(30);
     private final Material lineMaterial = new Material().setKD(0.0).setKS(0.0).setShininess(0);
 
-    // Define colors for different objects
+    // Colors for the scene
     public static final Color WHITE = new Color(java.awt.Color.WHITE);
-    public static final Color BROWN= new Color(222, 184, 135);
+    public static final Color BROWN = new Color(222, 184, 135);
     public static final Color YELLOW = new Color(java.awt.Color.YELLOW);
     public static final Color GREEN = new Color(java.awt.Color.GREEN);
     public static final Color PINK = new Color(java.awt.Color.PINK);
     public static final Color BLUE = new Color(java.awt.Color.BLUE);
 
-
     @Test
     public void testBrickWallImage() {
-        // Define dimensions for the scene and bricks
+        // Setting dimensions for the scene
         int width = 800;
         int height = 600;
         int brickWidth = 160;
         int brickHeight = 50;
         int mortarThickness = 3;
 
-        // Create the background polygon for the mortar
+        // Adding a black background
         Geometry background = new Polygon(
                 new Point(-width / 2.0, -height / 2.0, -100),
                 new Point(width / 2.0, -height / 2.0, -100),
@@ -54,57 +63,18 @@ public class FinalTests {
         ).setEmission(Color.BLACK).setMaterial(mortarMaterial);
         scene.geometries.add(background);
 
-        // Create the brick wall with alternating rows of bricks
-        for (int row = -height / 2; row < height / 2; row += brickHeight + mortarThickness) {
-            boolean isOffsetRow = ((row + height / 2) / (brickHeight + mortarThickness)) % 2 == 1;
-            int xOffset = isOffsetRow ? brickWidth / 2 : 0;
+        // Creating the brick wall
+        createBrickWall(width, height, brickWidth, brickHeight, mortarThickness);
 
-            // Add partial brick at the beginning of the offset row
-            if (isOffsetRow && xOffset > 0) {
-                Geometry partialBrick = new Polygon(
-                        new Point(-width / 2, row, 0),
-                        new Point(-width / 2 + xOffset, row, 0),
-                        new Point(-width / 2 + xOffset, row + brickHeight, 0),
-                        new Point(-width / 2, row + brickHeight, 0)
-                ).setEmission(BROWN).setMaterial(brickMaterial);
-                scene.geometries.add(partialBrick);
-            }
-
-            // Add full bricks
-            for (int col = -width / 2 + xOffset; col < width / 2; col += brickWidth + mortarThickness) {
-                Geometry brick = new Polygon(
-                        new Point(col, row, 0),
-                        new Point(col + brickWidth, row, 0),
-                        new Point(col + brickWidth, row + brickHeight, 0),
-                        new Point(col, row + brickHeight, 0)
-                ).setEmission(BROWN).setMaterial(brickMaterial);
-                scene.geometries.add(brick);
-            }
-
-            // Add partial brick at the end of the offset row
-            if (isOffsetRow && (width / 2 - xOffset) % (brickWidth + mortarThickness) != 0) {
-                int partialWidth = (width / 2 - xOffset) % (brickWidth + mortarThickness);
-                Geometry partialBrickRight = new Polygon(
-                        new Point(width / 2 - partialWidth, row, 0),
-                        new Point(width / 2, row, 0),
-                        new Point(width / 2, row + brickHeight, 0),
-                        new Point(width / 2 - partialWidth, row + brickHeight, 0)
-                ).setEmission(BROWN).setMaterial(brickMaterial);
-                scene.geometries.add(partialBrickRight);
-            }
-        }
-
+        // Setting dimensions for the picture frame
         int rectWidth = 150;
         int rectHeight = 250;
 
-        // Add middle rectangle with shapes
+        // Adding the picture frame and its contents
         addFrame(0, 0);
-
-        // Add triangle outline for the middle rectangle
         triangleOutline(0, rectHeight / 2.0 + 30, rectWidth);
 
-        
-        // Set ambient light and additional light sources for the scene
+        // Setting ambient light and other light sources
         scene.setAmbientLight(new AmbientLight(Color.BLACK, 0.15));
         scene.lights.addAll(
                 List.of(
@@ -122,18 +92,77 @@ public class FinalTests {
                 )
         );
 
-        // Render the image and write it to a file
-        camera.setImageWriter(new ImageWriter("miniproject1", width, height))
+        // Rendering the image with the camera and writing it to an image file
+        cameraWithAA.setImageWriter(new ImageWriter("minip1", width, height))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+        // Rendering the image without Anti-Aliasing and writing it to an image file
+        cameraWithoutAA.setImageWriter(new ImageWriter("minip1_without_aa", width, height))
                 .build()
                 .renderImage()
                 .writeToImage();
     }
 
     /**
-     * Adds a black rectangle with an inner white rectangle and various shapes inside it.
+     * Creates a brick wall with the given dimensions.
      *
-     * @param centerX The x-coordinate of the center of the rectangle.
-     * @param centerY The y-coordinate of the center of the rectangle.
+     * @param width The total width of the wall.
+     * @param height The total height of the wall.
+     * @param brickWidth The width of a single brick.
+     * @param brickHeight The height of a single brick.
+     * @param mortarThickness The thickness of the mortar between bricks.
+     */
+    private void createBrickWall
+    (int width, int height, int brickWidth, int brickHeight, int mortarThickness) {
+        // Loop over each row
+        for (int row = -height / 2; row < height / 2; row += brickHeight + mortarThickness) {
+            // Determine if the row should be offset
+            boolean isOffsetRow = ((row + height / 2) / (brickHeight + mortarThickness)) % 2 == 1;
+            int xOffset = isOffsetRow ? brickWidth / 2 : 0;
+
+            // Add a half brick at the beginning of the offset row
+            if (isOffsetRow && xOffset > 0) {
+                addBrick(-width / 2, row, xOffset, brickHeight);
+            }
+
+            // Loop over each column in the row
+            for (int col = -width / 2 + xOffset; col < width / 2; col += brickWidth + mortarThickness) {
+                addBrick(col, row, brickWidth, brickHeight);
+            }
+
+            // Calculate the partial brick width at the end of the offset row if necessary
+            int partialWidth = (width / 2 - xOffset) % (brickWidth + mortarThickness);
+            if (isOffsetRow && partialWidth != 0) {
+                addBrick(width / 2 - partialWidth, row, partialWidth, brickHeight);
+            }
+        }
+    }
+
+    /**
+     * Adds a single brick to the scene at the specified location.
+     *
+     * @param x The x-coordinate of the brick's bottom-left corner.
+     * @param y The y-coordinate of the brick's bottom-left corner.
+     * @param brickWidth The width of the brick.
+     * @param brickHeight The height of the brick.
+     */
+    private void addBrick(double x, double y, double brickWidth, double brickHeight) {
+        Geometry brick = new Polygon(
+                new Point(x, y, 0),
+                new Point(x + brickWidth, y, 0),
+                new Point(x + brickWidth, y + brickHeight, 0),
+                new Point(x, y + brickHeight, 0)
+        ).setEmission(BROWN).setMaterial(brickMaterial);
+        scene.geometries.add(brick);
+    }
+
+    /**
+     * Adds a frame with shapes to the scene.
+     *
+     * @param centerX The x-coordinate of the frame's center.
+     * @param centerY The y-coordinate of the frame's center.
      */
     private void addFrame(double centerX, double centerY) {
         int rectWidth = 150;
@@ -141,7 +170,7 @@ public class FinalTests {
         int innerRectWidth = rectWidth - 20;
         int innerRectHeight = rectHeight - 20;
 
-        // Create the outer black rectangle
+        // Adding the outer black rectangle of the frame
         Geometry blackRectangle = new Polygon(
                 new Point(centerX - rectWidth / 2.0, centerY - rectHeight / 2.0, 10),
                 new Point(centerX + rectWidth / 2.0, centerY - rectHeight / 2.0, 10),
@@ -150,7 +179,7 @@ public class FinalTests {
         ).setEmission(Color.BLACK).setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(30));
         scene.geometries.add(blackRectangle);
 
-        // Create the inner white rectangle
+        // Adding the inner white rectangle of the frame
         Geometry innerWhiteRectangle = new Polygon(
                 new Point(centerX - innerRectWidth / 2.0, centerY - innerRectHeight / 2.0, 10.1),
                 new Point(centerX + innerRectWidth / 2.0, centerY - innerRectHeight / 2.0, 10.1),
@@ -159,27 +188,26 @@ public class FinalTests {
         ).setEmission(WHITE).setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(30));
         scene.geometries.add(innerWhiteRectangle);
 
-        // Add various shapes inside the inner white rectangle
+        // Adding shapes inside the frame
         addShapes(centerX, centerY, innerRectWidth, innerRectHeight);
     }
 
     /**
-     * Adds various shapes inside the specified area.
+     * Adds shapes inside the frame.
      *
-     * @param centerX The x-coordinate of the center of the area.
-     * @param centerY The y-coordinate of the center of the area.
-     * @param width The width of the area.
-     * @param height The height of the area.
+     * @param centerX The x-coordinate of the center of the frame.
+     * @param centerY The y-coordinate of the center of the frame.
+     * @param width The width of the frame.
+     * @param height The height of the frame.
      */
     private void addShapes(double centerX, double centerY, double width, double height) {
         double halfWidth = width / 2;
         double halfHeight = height / 2;
 
-        // Adjusted dimensions for shapes to fit inside the inner white rectangle
         double shapeWidth = width * 0.8;
         double shapeHeight = height * 0.8;
 
-        // Yellow trapezoid
+        // Adding a yellow trapezoid
         Geometry yellowTrapezoid = new Polygon(
                 new Point(centerX - halfWidth, centerY + halfHeight, 10.2),
                 new Point(centerX - halfWidth + shapeWidth / 4, centerY + halfHeight, 10.2),
@@ -188,7 +216,7 @@ public class FinalTests {
         ).setEmission(YELLOW).setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(30));
         scene.geometries.add(yellowTrapezoid);
 
-        // Green triangle
+        // Adding a green triangle
         Geometry greenTriangle = new Polygon(
                 new Point(centerX - shapeWidth / 4, centerY - halfHeight, 10.2),
                 new Point(centerX, centerY - halfHeight + shapeHeight / 4, 10.2),
@@ -196,7 +224,7 @@ public class FinalTests {
         ).setEmission(GREEN).setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(30));
         scene.geometries.add(greenTriangle);
 
-        // Pink triangle
+        // Adding a pink triangle
         Geometry pinkTriangle = new Polygon(
                 new Point(centerX + halfWidth - shapeWidth / 3, centerY + halfHeight, 10.2),
                 new Point(centerX + halfWidth, centerY + halfHeight, 10.2),
@@ -204,7 +232,7 @@ public class FinalTests {
         ).setEmission(PINK).setMaterial(new Material().setKD(0.5).setKS(0.5).setShininess(30));
         scene.geometries.add(pinkTriangle);
 
-        // Blue rectangle
+        // Adding a blue trapezoid
         Geometry blueTrapezoid = new Polygon(
                 new Point(centerX - shapeWidth / 8, centerY + halfHeight, 10.2),
                 new Point(centerX + shapeWidth / 8, centerY + halfHeight, 10.2),
@@ -214,23 +242,18 @@ public class FinalTests {
         scene.geometries.add(blueTrapezoid);
     }
 
-    
-
-
     /**
-     * Simulates a triangle attached to the picture which is hung on a nail.
+     * Adds a triangle outline to the scene.
      *
-     * @param centerX The x-coordinate of the center of the triangle.
-     * @param centerY The y-coordinate of the center of the triangle.
-     * @param baseWidth The width of the base of the triangle.
+     * @param centerX The x-coordinate of the triangle's center.
+     * @param centerY The y-coordinate of the triangle's center.
+     * @param baseWidth The width of the triangle's base.
      */
     private void triangleOutline(double centerX, double centerY, int baseWidth) {
-
-        // Calculate the height of the triangle based on its base width
         double height = baseWidth * Math.sqrt(3) / 2;
         double thickness = 2;
 
-        // Create and add the left trapezoid
+        // Adding the left trapezoid of the triangle outline
         Geometry leftTrapezoid = new Polygon(
                 new Point(centerX - baseWidth / 2, centerY - height / 2, 10),
                 new Point(centerX - baseWidth / 2 + thickness, centerY - height / 2 + thickness, 10),
@@ -239,7 +262,7 @@ public class FinalTests {
         ).setEmission(Color.BLACK).setMaterial(lineMaterial);
         scene.geometries.add(leftTrapezoid);
 
-        // Create and add the right trapezoid
+        // Adding the right trapezoid of the triangle outline
         Geometry rightTrapezoid = new Polygon(
                 new Point(centerX + baseWidth / 2, centerY - height / 2, 10),
                 new Point(centerX + baseWidth / 2 - thickness, centerY - height / 2 + thickness, 10),
@@ -248,7 +271,7 @@ public class FinalTests {
         ).setEmission(Color.BLACK).setMaterial(lineMaterial);
         scene.geometries.add(rightTrapezoid);
 
-        // Create and add the bottom trapezoid
+        // Adding the bottom trapezoid of the triangle outline
         Geometry bottomTrapezoid = new Polygon(
                 new Point(centerX - baseWidth / 2, centerY - height / 2, 10),
                 new Point(centerX + baseWidth / 2, centerY - height / 2, 10),
@@ -257,14 +280,13 @@ public class FinalTests {
         ).setEmission(Color.BLACK).setMaterial(lineMaterial);
         scene.geometries.add(bottomTrapezoid);
 
-        // Add a small black sphere at the top of the triangle
+        // Adding a black sphere at the top of the triangle
         double sphereRadius = 5;
         blackSphere(new Point(centerX, centerY + height / 2, 10.3), sphereRadius);
     }
 
     /**
-     * Adds a black sphere at the specified point with the given radius.
-     * The sphere simulates a nail that holds the image
+     * Adds a black sphere to the scene.
      *
      * @param center The center point of the sphere.
      * @param radius The radius of the sphere.
@@ -272,9 +294,6 @@ public class FinalTests {
     private void blackSphere(Point center, double radius) {
         Geometry blackSphere = new Sphere(center, radius).setEmission(Color.BLACK)
                 .setMaterial(new Material().setKD(0.2).setKS(0.2).setShininess(10));
-
         scene.geometries.add(blackSphere);
     }
-
-  
 }

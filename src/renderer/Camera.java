@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.List;
+import java.util.LinkedList;
 import java.util.MissingResourceException;
 
 import static primitives.Util.isZero;
@@ -12,11 +14,12 @@ import static primitives.Util.isZero;
  */
 public class Camera implements Cloneable {
 
-    private Point p0;
-    private Vector vTo, vUp, vRight;
-    private double width = 0, height = 0, distance = 0;
-    private ImageWriter imageWriter;
-    private RayTracerBase rayTracer;
+    private Point p0; // Camera location
+    private Vector vTo, vUp, vRight; // Direction vectors
+    private double width = 0, height = 0, distance = 0; // View plane dimensions and distance
+    private ImageWriter imageWriter; // Image writer for the rendered image
+    private RayTracerBase rayTracer; // Ray tracer for the scene
+    private int numberOfRays = 1; // Default value for no anti-aliasing
 
     /**
      * Private Default constructor for the Camera class.
@@ -38,6 +41,37 @@ public class Camera implements Cloneable {
     }
 
     /**
+     * Calculates the point on the view plane corresponding to a given pixel.
+     *
+     * @param nX Number of columns (width resolution)
+     * @param nY Number of rows (height resolution)
+     * @param j  Pixel's column index (horizontal coordinate)
+     * @param i  Pixel's row index (vertical coordinate)
+     * @return the point on the view plane corresponding to the pixel
+     */
+    private Point calculateViewPlanePoint(int nX, int nY, int j, int i) {
+        // Calculate the center point of the view plane
+        Point pc = p0.add(vTo.scale(distance));
+
+        // Calculate the height and width of each pixel
+        double rY = height / nY;
+        double rX = width / nX;
+
+        // Calculate the offset of the pixel from the center of the view plane
+        double xJ = (j - (nX - 1) / 2.0) * rX;
+        double yI = -(i - (nY - 1) / 2.0) * rY;
+
+        // Calculate the point on the view plane corresponding to the pixel
+        Point pIJ = pc;
+        if (!isZero(xJ))
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if (!isZero(yI))
+            pIJ = pIJ.add(vUp.scale(yI));
+
+        return pIJ;
+    }
+
+    /**
      * Constructs a ray through the center of a pixel on the view plane.
      *
      * @param nX Number of columns (width resolution)
@@ -47,30 +81,56 @@ public class Camera implements Cloneable {
      * @return the constructed ray
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
-        // Calculate the center of the view plane
-        Point pc = p0.add(vTo.scale(distance));
-
-        // Calculate the size of each pixel
-        double rY = height / nY;
-        double rX = width / nX;
-
-        // Calculate the offset from the center of the view plane to the pixel (i, j)
-        double xJ = (j - (nX - 1) / 2.0) * rX;
-        double yI = -(i - (nY - 1) / 2.0) * rY;
-
-        // Calculate the intersection point on the view plane
-        Point pIJ = pc;
-        if (!isZero(xJ))
-            pIJ = pIJ.add(vRight.scale(xJ));
-        if (!isZero(yI))
-            pIJ = pIJ.add(vUp.scale(yI));
-
-        // Construct and return the ray from the camera origin through the pixel center
+        Point pIJ = calculateViewPlanePoint(nX, nY, j, i);
         return new Ray(p0, pIJ.subtract(p0));
     }
 
+    /**
+     * Constructs a list of rays for anti-aliasing through a pixel on the view plane.
+     * If the number of rays is less than or equal to 1, it returns a list containing only the central ray.
+     *
+     * @param nX Number of columns (width resolution)
+     * @param nY Number of rows (height resolution)
+     * @param j  Pixel's column index (horizontal coordinate)
+     * @param i  Pixel's row index (vertical coordinate)
+     * @return list of rays for anti-aliasing
+     */
+    public List<Ray> constructRays(int nX, int nY, int j, int i) {
+        // If numberOfRays is less than or equal to 1, return just the central ray
+        if (numberOfRays <= 1) {
+            return List.of(constructRay(nX, nY, j, i));
+        }
 
-    //getters
+        // Calculate the view plane point corresponding to the pixel
+        Point pIJ = calculateViewPlanePoint(nX, nY, j, i);
+
+        List<Ray> rays = new LinkedList<>();
+        // Calculate the height and width of each pixel
+        double rY = height / nY;
+        double rX = width / nX;
+        // Calculate the height and width of each sub-pixel
+        double subPixelWidth = rX / numberOfRays;
+        double subPixelHeight = rY / numberOfRays;
+
+        // Loop over each sub-pixel to create sample rays
+        for (int subY = 0; subY < numberOfRays; subY++) {
+            for (int subX = 0; subX < numberOfRays; subX++) {
+                // Calculate the offset of the sub-pixel from the center of the pixel
+                double offsetX = (subX - (numberOfRays - 1) / 2.0) * subPixelWidth;
+                double offsetY = (subY - (numberOfRays - 1) / 2.0) * subPixelHeight;
+                // Calculate the center point of the sub-pixel
+                Point subPixelCenter = pIJ.add(vRight.scale(offsetX)).add(vUp.scale(offsetY));
+                // Create a new ray from the camera to the sub-pixel center
+                rays.add(new Ray(p0, subPixelCenter.subtract(p0)));
+            }
+        }
+
+        return rays;
+    }
+
+
+
+    // Getters
     public Point getP0() {
         return p0;
     }
@@ -103,34 +163,55 @@ public class Camera implements Cloneable {
      * Renders the image by tracing rays through each pixel.
      *
      * @return the camera object for method chaining
-     * @throws UnsupportedOperationException as a placeholder for the method
      */
     public Camera renderImage() {
-        // Get the number of pixels along the x-axis and y-axis
         int nx = imageWriter.getNx();
         int ny = imageWriter.getNy();
 
-        // Loop over each pixel row (y-axis)
-        for (int i = 0; i < ny; i++)
-            // Loop over each pixel column (x-axis)
-            for (int j = 0; j < nx; j++)
-                // Cast a ray through the current pixel at (j, i)
-                castRay(nx, ny, j, i);
+        // Loop over each pixel in the image
+        for (int i = 0; i < ny; i++) {
+            for (int j = 0; j < nx; j++) {
+                // Use anti-aliasing if numberOfRays is greater than 1
+                if (numberOfRays == 1) {
+                    castRay(nx, ny, j, i);
+                } else {
+                    castRays(nx, ny, j, i);
+                }
+            }
+        }
 
         return this;
     }
 
     /**
-     * Casts a ray through the specified pixel and determines its color.
+     * Casts a single ray through a specific pixel to compute the color.
      *
-     * @param nX the number of pixels along the x-axis
-     * @param nY the number of pixels along the y-axis
-     * @param j  the x-coordinate of the pixel
-     * @param i  the y-coordinate of the pixel
+     * @param nX The number of pixels in the x-axis of the view plane grid.
+     * @param nY The number of pixels in the y-axis of the view plane grid.
+     * @param j  The index of the pixel in the x-axis of the grid.
+     * @param i  The index of the pixel in the y-axis of the grid.
      */
     private void castRay(int nX, int nY, int j, int i) {
         Ray ray = constructRay(nX, nY, j, i);
         Color color = rayTracer.traceRay(ray);
+        imageWriter.writePixel(j, i, color);
+    }
+
+    /**
+     * Casts multiple rays through a specific pixel to compute the color by tracing each ray and performing anti-aliasing.
+     *
+     * @param nX The number of pixels in the x-axis of the view plane grid.
+     * @param nY The number of pixels in the y-axis of the view plane grid.
+     * @param j  The index of the pixel in the x-axis of the grid.
+     * @param i  The index of the pixel in the y-axis of the grid.
+     */
+    private void castRays(int nX, int nY, int j, int i) {
+        List<Ray> rays = constructRays(nX, nY, j, i);
+        Color color = Color.BLACK;
+        for (Ray ray : rays) {
+            color = color.add(rayTracer.traceRay(ray));
+        }
+        color = color.reduce(rays.size());
         imageWriter.writePixel(j, i, color);
     }
 
@@ -142,17 +223,15 @@ public class Camera implements Cloneable {
      * @return the camera object for method chaining
      */
     public Camera printGrid(int interval, Color color) {
-
-        // Check if the image writer is initialized
         if (imageWriter == null)
             throw new MissingResourceException("Image writer was null", getClass().getName(), "");
 
         int nx = imageWriter.getNx();
         int ny = imageWriter.getNy();
 
+        // Loop over each pixel and print grid lines at the specified interval
         for (int j = 0; j < nx; j++) {
             for (int i = 0; i < ny; i++) {
-                // Check if the current pixel is at the specified interval
                 if (j % interval == 0 || i % interval == 0) {
                     imageWriter.writePixel(j, i, color);
                 }
@@ -197,7 +276,6 @@ public class Camera implements Cloneable {
          * @throws IllegalArgumentException if the vectors are not orthogonal
          */
         public Builder setDirection(Vector vTo, Vector vUp) {
-
             if ((vTo.dotProduct(vUp) != 0)) {
                 throw new IllegalArgumentException("Direction vectors must be orthogonal");
             }
@@ -223,7 +301,6 @@ public class Camera implements Cloneable {
             camera.height = height;
             return this;
         }
-
 
         /**
          * Sets the distance from the camera to the view plane.
@@ -259,6 +336,20 @@ public class Camera implements Cloneable {
          */
         public Builder setRayTracer(RayTracerBase rayTracer) {
             camera.rayTracer = rayTracer;
+            return this;
+        }
+
+        /**
+         * Sets the number of rays for anti-aliasing.
+         *
+         * @param numberOfRays the number of rays
+         * @return the Builder instance for chaining
+         */
+        public Builder setNumberOfRays(int numberOfRays) {
+            if (numberOfRays < 1) {
+                throw new IllegalArgumentException("Number of rays must be greater than 0");
+            }
+            camera.numberOfRays = numberOfRays;
             return this;
         }
 
@@ -333,4 +424,3 @@ public class Camera implements Cloneable {
         }
     }
 }
-
