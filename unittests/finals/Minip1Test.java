@@ -9,13 +9,14 @@ import scene.*;
 
 import java.util.List;
 
-public class FinalTests {
+public class Minip1Test {
     // Creating a new scene with the name "A wall with a picture scene"
     private final Scene scene = new Scene("A wall with a picture scene");
 
-    // Creating a Camera object with Anti-Aliasing
+    //Creating a Camera object with Anti-Aliasing
     private final Camera.Builder cameraWithAA = Camera.getBuilder()
-            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)) // Setting camera direction
+            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
+            // Setting camera direction
             .setLocation(new Point(0, 0, 1000)) // Setting camera location
             .setVpDistance(1000) // Setting view plane distance
             .setVpSize(800, 600) // Setting view plane size
@@ -24,7 +25,8 @@ public class FinalTests {
 
     // Creating a Camera object without Anti-Aliasing
     private final Camera.Builder cameraWithoutAA = Camera.getBuilder()
-            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)) // Setting camera direction
+            .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
+            // Setting camera direction
             .setLocation(new Point(0, 0, 1000)) // Setting camera location
             .setVpDistance(1000) // Setting view plane distance
             .setVpSize(800, 600) // Setting view plane size

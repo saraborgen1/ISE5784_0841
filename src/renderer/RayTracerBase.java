@@ -1,8 +1,10 @@
 package renderer;
 
-import primitives.Color;
+import primitives.*;
 import primitives.Ray;
 import scene.Scene;
+
+import java.util.List;
 
 /**
  * Abstract base class for ray tracing algorithms.
